@@ -1,0 +1,35 @@
+// ═══════════════════════════════════════════════════════════
+//  JT's RUSTIC CUISINE — Main SCSS Entry
+//  This is the single stylesheet imported by main.jsx
+// ═══════════════════════════════════════════════════════════
+
+// 1. BASE — reset, body, utilities (must come first)
+@use "./base/reset";
+@use "./base/utilities";
+
+// 2. LAYOUT — site-wide structural components
+@use "./layout/nav";
+@use "./layout/footer";
+
+// 3. COMPONENTS — reusable UI pieces
+@use "./components/buttons";
+@use "./components/cursor";
+@use "./components/hero";
+@use "./components/about";
+@use "./components/menu";
+@use "./components/packages";
+@use "./components/process";
+@use "./components/postcards";
+@use "./components/cta";
+@use "./components/admin-layout";
+@use "./components/search";
+@use "./components/variations_modal";
+
+// 4. PAGES — page-specific styles
+@use "./pages/shared";
+@use "./pages/cart";
+@use "./pages/checkout";
+@use "./pages/admin";
+@use './pages/contact';
+@use './pages/our_story';
+@use './pages/faq_policy';

@@ -1,0 +1,351 @@
+@use "../abstracts" as *;
+
+.packages {
+  padding: 130px 48px;
+  background: $color-ink;
+  color: $color-paper-crisp;
+  position: relative;
+  overflow: hidden;
+
+  @include md-down { padding: 80px 24px; }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: screen;
+  }
+
+  &__header {
+    max-width: $container-2xl;
+    margin: 0 auto 80px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: $color-ochre;
+    font-weight: $fw-medium;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    &::before,
+    &::after {
+      content: '';
+      width: 60px;
+      height: 1px;
+      background: $color-ochre;
+    }
+
+    strong {
+      @include text-display-italic(0.85rem);
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: $color-paper-crisp;
+      font-weight: $fw-medium;
+    }
+  }
+
+  &__heading {
+    @include text-display(clamp(2.8rem, 5vw, 4.5rem));
+    line-height: 1;
+    margin-bottom: 22px;
+
+    em { font-style: italic; color: $color-ochre; }
+  }
+
+  &__sub {
+    font-family: $font-serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: rgba($color-paper-crisp, 0.65);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  &__grid {
+    max-width: $container-2xl;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    position: relative;
+    z-index: 2;
+
+    @include lg-down { grid-template-columns: 1fr; gap: 24px; }
+  }
+}
+
+.package-card {
+  background: $color-paper-crisp;
+  color: $color-ink;
+  padding: 48px 38px 44px;
+  position: relative;
+  clip-path: polygon(
+    0 14px, 6px 14px, 6px 8px, 12px 8px, 12px 14px, 18px 14px, 18px 8px, 24px 8px, 24px 14px, 30px 14px, 30px 8px, 36px 8px, 36px 14px, 42px 14px, 42px 8px, 48px 8px, 48px 14px, 54px 14px, 54px 8px, 60px 8px, 60px 14px,
+    100% 14px,
+    100% calc(100% - 14px),
+    60px calc(100% - 14px), 60px calc(100% - 8px), 54px calc(100% - 8px), 54px calc(100% - 14px), 48px calc(100% - 14px), 48px calc(100% - 8px), 42px calc(100% - 8px), 42px calc(100% - 14px), 36px calc(100% - 14px), 36px calc(100% - 8px), 30px calc(100% - 8px), 30px calc(100% - 14px), 24px calc(100% - 14px), 24px calc(100% - 8px), 18px calc(100% - 8px), 18px calc(100% - 14px), 12px calc(100% - 14px), 12px calc(100% - 8px), 6px calc(100% - 8px), 6px calc(100% - 14px), 0 calc(100% - 14px)
+  );
+  transition: transform $transition-slow;
+
+  &:hover { transform: translateY(-6px); }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    bottom: 24px;
+    left: 70px;
+    width: 1px;
+    background-image: linear-gradient(to bottom, $color-ink-fade 50%, transparent 50%);
+    background-size: 1px 6px;
+    background-repeat: repeat-y;
+    opacity: 0.35;
+  }
+
+  &--featured {
+    background: $color-terracotta;
+    color: $color-paper-crisp;
+    transform: scale(1.04);
+    z-index: 2;
+
+    &:hover { transform: scale(1.04) translateY(-6px); }
+
+    &::before {
+      background-image: linear-gradient(to bottom, rgba($color-paper-crisp, 0.5) 50%, transparent 50%);
+    }
+
+    .package-card__label { color: rgba($color-paper-crisp, 0.85); }
+    .package-card__guests { color: rgba($color-paper-crisp, 0.75); }
+    .package-card__price-per { color: rgba($color-paper-crisp, 0.8); }
+    .package-card__minimum { color: rgba($color-paper-crisp, 0.7); }
+    .package-card__stub { color: rgba($color-paper-crisp, 0.6); }
+    .package-card__name em { color: $color-ochre; }
+
+    .package-card__divider {
+      background-image: linear-gradient(to right, rgba($color-paper-crisp, 0.5) 50%, transparent 50%);
+      opacity: 0.7;
+    }
+
+    .package-card__features li {
+      color: rgba($color-paper-crisp, 0.92);
+      &::before { color: $color-ochre; }
+    }
+
+    .package-card__btn {
+      background: $color-paper-crisp;
+      color: $color-terracotta;
+
+      &:hover { background: $color-ink; color: $color-paper-crisp; }
+    }
+  }
+
+  &__stub {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center;
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    white-space: nowrap;
+    font-weight: $fw-medium;
+  }
+
+  &__content { padding-left: 60px; }
+
+  &__ribbon {
+    position: absolute;
+    top: 32px;
+    right: -12px;
+    background: $color-ink;
+    color: $color-ochre;
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    padding: 7px 16px;
+    transform: rotate(3deg);
+    z-index: 3;
+
+    &::before { content: '★'; color: $color-ochre; margin-right: 4px; }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: 0;
+      border-top: 7px solid $color-terracotta-deep;
+      border-right: 10px solid transparent;
+    }
+  }
+
+  &__label {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    margin-bottom: 18px;
+    color: $color-terracotta;
+  }
+
+  &__name {
+    @include text-display(2.2rem);
+    line-height: 1;
+    margin-bottom: 12px;
+
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__guests {
+    font-family: $font-serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: $color-ink-fade;
+    margin-bottom: 34px;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  &__price {
+    @include text-display(3.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  &__price-per {
+    font-family: $font-serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: $color-ink-fade;
+  }
+
+  &__minimum {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 36px;
+  }
+
+  &__divider {
+    height: 1px;
+    background-image: linear-gradient(to right, $color-ink-fade 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    margin-bottom: 28px;
+    opacity: 0.4;
+  }
+
+  &__features {
+    margin-bottom: 40px;
+
+    li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 9px 0;
+      font-family: $font-serif;
+      font-size: 0.94rem;
+      line-height: 1.5;
+      color: $color-ink-soft;
+
+      &::before {
+        content: '✦';
+        color: $color-terracotta;
+        flex-shrink: 0;
+        font-size: 0.8rem;
+        padding-top: 4px;
+      }
+    }
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 14px 26px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.64rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    width: 100%;
+    justify-content: center;
+    transition: background $transition-normal, gap $transition-normal;
+
+    &:hover { background: $color-terracotta; gap: 16px; }
+  }
+}
+
+.package-card {
+
+  &__includes-label {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    margin: 20px 0 10px;
+    color: $color-ink-fade;
+
+    // On featured card keep readable
+    .package-card--featured & { color: rgba($color-paper-crisp, 0.65); }
+  }
+
+  &__includes {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 24px;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-family: $font-serif;
+      font-size: 0.88rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: $color-ink-soft;
+
+      .package-card--featured & { color: rgba($color-paper-crisp, 0.82); }
+
+      &::before {
+        content: '';
+        font-size: 0.72rem;
+        flex-shrink: 0;
+        padding-top: 2px;
+        font-style: normal;
+      }
+    }
+  }
+}

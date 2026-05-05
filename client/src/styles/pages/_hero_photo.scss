@@ -1,0 +1,18 @@
+// ── APPEND TO BOTTOM OF _contact.scss ────────────────────
+// Hero photo preview in admin (landscape, not portrait)
+
+.admin-sc__photo-preview--hero {
+  aspect-ratio: 4/5;  // matches hero__photo tile ratio
+}
+
+// hero__photo-img — real photo inside the polaroid tile
+.hero__photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: inherit;
+}

@@ -1,0 +1,379 @@
+@use "../abstracts" as *;
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-nav;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 18px 48px;
+  background: rgba($color-paper, 0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba($color-ink, 0.12);
+  transition: border-color $transition-normal;
+
+  &--search-open { border-bottom-color: $color-terracotta; }
+
+  // On mobile — logo left, actions right
+  @include lg-down {
+    grid-template-columns: 1fr auto;
+    padding: 16px 24px;
+    gap: 0;
+  }
+
+  &__group {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+
+    &--left  {
+      @include lg-down { display: none; }
+    }
+
+    &--right {
+      gap: 20px;
+      justify-content: flex-end;
+      @include lg-down { display: none; }
+    }
+  }
+
+  &__link {
+    @include text-mono-label;
+    color: $color-ink-soft;
+    position: relative;
+    transition: color $transition-normal;
+
+    &::before {
+      content: attr(data-num);
+      font-family: $font-mono;
+      font-size: 0.54rem;
+      color: $color-terracotta;
+      margin-right: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 1px;
+      background: $color-terracotta;
+      transition: width $transition-slow;
+    }
+
+    &:hover { color: $color-terracotta; &::after { width: 100%; } }
+    &.active { color: $color-terracotta; }
+  }
+
+  &__logo {
+    @include text-display-italic(1.15rem);
+    color: $color-ink;
+    text-align: center;
+    line-height: 1.05;
+    grid-column: 2;
+
+    @include lg-down {
+      text-align: left;
+      grid-column: 1;
+      font-size: 1rem;
+    }
+
+    small {
+      display: block;
+      font-family: $font-mono;
+      font-size: 0.5rem;
+      letter-spacing: $ls-widest;
+      text-transform: uppercase;
+      color: $color-terracotta;
+      font-style: normal;
+      font-weight: $fw-medium;
+      margin-top: 3px;
+
+      @include lg-down { display: none; }
+    }
+  }
+
+  // ─── SEARCH BUTTON ────────────────────────────────────
+  &__search-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-ink-soft;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color $transition-normal, background $transition-normal;
+
+    &:hover { color: $color-terracotta; background: rgba($color-terracotta, 0.08); }
+    &--active { color: $color-terracotta; background: rgba($color-terracotta, 0.1); }
+  }
+
+  // ─── BASKET ───────────────────────────────────────────
+  &__cart {
+    display: flex;
+    align-items: center;
+    color: $color-ink-soft;
+    transition: color $transition-normal;
+    &:hover { color: $color-terracotta; }
+  }
+
+  &__cart-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
+
+  &__cart-icon {
+    transition: transform $transition-normal;
+    .nav__cart:hover & { transform: translateY(-1px); }
+  }
+
+  &__cart-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: $radius-full;
+    background: $color-terracotta;
+    color: $color-paper-crisp;
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    font-weight: $fw-semibold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: badge-pop 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  // ─── ORDER BUTTON ─────────────────────────────────────
+  &__order {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 10px 22px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    transition: background $transition-normal, transform $transition-normal;
+
+    &:hover { background: $color-terracotta; transform: translateY(-1px); }
+  }
+
+  // ─── MOBILE RIGHT (cart + hamburger) ──────────────────
+  &__mobile-right {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+
+    @include lg-down { display: flex; }
+  }
+
+  // ─── HAMBURGER ────────────────────────────────────────
+  &__hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+
+    span {
+      display: block;
+      height: 1.5px;
+      background: $color-ink;
+      border-radius: 1px;
+      transform-origin: center;
+      transition: transform 300ms ease, opacity 200ms ease, width 200ms ease;
+      width: 100%;
+
+      &:nth-child(1) { width: 100%; }
+      &:nth-child(2) { width: 75%; }
+      &:nth-child(3) { width: 50%; }
+    }
+
+    &--open span {
+      &:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 100%; }
+      &:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      &:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 100%; }
+    }
+  }
+}
+
+// ─── MOBILE DRAWER ────────────────────────────────────────
+.nav__drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 85vw);
+  background: $color-paper-crisp;
+  border-left: 1px solid rgba($color-ink, 0.1);
+  z-index: calc(#{$z-nav} - 1);
+  transform: translateX(100%);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+
+  &--open { transform: translateX(0); }
+
+  &-inner {
+    padding: 88px 32px 40px; // 88px = nav height + gap
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  &-folio {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 16px;
+  }
+
+  &-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  &-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px dashed rgba($color-ink, 0.08);
+    font-family: $font-serif;
+    font-size: 1.4rem;
+    color: $color-ink;
+    animation: drawer-item-in 300ms ease both;
+
+    &:hover { color: $color-terracotta; }
+    &.active { color: $color-terracotta; }
+  }
+
+  &-num {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    color: $color-terracotta;
+    letter-spacing: 0.14em;
+    font-weight: $fw-medium;
+    flex-shrink: 0;
+  }
+
+  &-divider {
+    height: 1px;
+    background-image: linear-gradient(to right, rgba($color-ink, 0.2) 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    margin: 16px 0;
+  }
+
+  &-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 14px 24px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    margin-bottom: 12px;
+    transition: background $transition-normal;
+    width: fit-content;
+
+    &:hover { background: $color-terracotta; }
+  }
+
+  &-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 10px 0;
+    margin-top: auto;
+    transition: color $transition-normal;
+
+    &:hover { color: $color-terracotta; }
+  }
+
+  &-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba($color-ink, 0.35);
+    backdrop-filter: blur(2px);
+    z-index: calc(#{$z-nav} - 2);
+    animation: modal-fade-in 200ms ease;
+  }
+}
+
+// ─── Footer social icon update ─────────────────────────────
+.footer__soc {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba($color-paper-crisp, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba($color-paper-crisp, 0.5);
+  transition: all $transition-normal;
+
+  &:hover {
+    color: $color-paper-crisp;
+    border-color: rgba($color-paper-crisp, 0.4);
+    background: rgba($color-paper-crisp, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+// ─── Animations ───────────────────────────────────────────
+@keyframes badge-pop {
+  0%   { transform: scale(0.6); }
+  100% { transform: scale(1); }
+}
+
+@keyframes drawer-item-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

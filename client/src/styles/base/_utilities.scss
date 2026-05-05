@@ -1,0 +1,75 @@
+@use "../abstracts" as *;
+
+// ─── DECORATIVE ORNAMENTS ──────────────────────────────────
+.torn-edge-top,
+.torn-edge-bottom {
+  height: 18px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.torn-edge-top {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 18' preserveAspectRatio='none'%3E%3Cpath d='M0 18 L0 10 Q 30 2 60 8 T 120 10 T 180 6 T 240 12 T 300 8 T 360 4 T 420 10 T 480 8 T 540 12 T 600 6 T 660 10 T 720 8 T 780 4 T 840 12 T 900 8 T 960 10 T 1020 6 T 1080 12 T 1140 8 T 1200 10 L 1200 18 Z' fill='%23ECE2CD'/%3E%3C/svg%3E");
+}
+
+.torn-edge-bottom {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 18' preserveAspectRatio='none'%3E%3Cpath d='M0 0 L0 8 Q 30 16 60 10 T 120 8 T 180 12 T 240 6 T 300 10 T 360 14 T 420 8 T 480 10 T 540 6 T 600 12 T 660 8 T 720 10 T 780 14 T 840 6 T 900 10 T 960 8 T 1020 12 T 1080 6 T 1140 10 T 1200 8 L 1200 0 Z' fill='%23ECE2CD'/%3E%3C/svg%3E");
+}
+
+.tape {
+  position: absolute;
+  width: 80px;
+  height: 24px;
+  background: rgba($color-ochre, 0.4);
+  box-shadow: inset 0 0 10px rgba($color-ink, 0.08);
+  pointer-events: none;
+  z-index: 5;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 1px;
+    background: rgba($color-ink, 0.15);
+  }
+  &::before { left: 4px; }
+  &::after  { right: 4px; }
+}
+
+.coffee-stain {
+  position: absolute;
+  pointer-events: none;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid $color-coffee;
+  background: radial-gradient(circle, transparent 60%, $color-coffee 62%, transparent 67%);
+  opacity: 0.8;
+}
+
+// ─── SCROLL REVEAL ─────────────────────────────────────────
+.reveal {
+  // Touch devices — always visible, no transform, no transition
+  @media (hover: none), (pointer: coarse) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  // Desktop — animate in
+  @media (hover: hover) and (pointer: fine) {
+    opacity: 0;
+    transform: translateY(24px); // reduced from 40px — subtler, faster perceived
+    transition: opacity 400ms ease, transform 400ms ease; // fixed ms, not a variable
+    will-change: opacity, transform;
+
+    &.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      will-change: auto; // release after animation completes
+    }
+  }
+}

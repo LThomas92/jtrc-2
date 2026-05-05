@@ -1,0 +1,508 @@
+@use "../abstracts" as *;
+
+.checkout {
+
+  // ── Two-column layout ────────────────────────────────
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 48px;
+    align-items: flex-start;
+
+    @include lg-down { grid-template-columns: 1fr; }
+  }
+
+  // ── Progress steps ───────────────────────────────────
+  &__steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 48px;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &--active {
+      .checkout__step-num   { background: $color-terracotta; color: $color-paper-crisp; }
+      .checkout__step-label { color: $color-ink; }
+    }
+
+    &--done {
+      .checkout__step-num   { background: $color-olive; color: $color-paper-crisp; }
+      .checkout__step-label { color: $color-ink-fade; }
+    }
+  }
+
+  &__step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba($color-ink, 0.08);
+    color: $color-ink-fade;
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    font-weight: $fw-semibold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__step-label {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    color: $color-ink-fade;
+  }
+
+  &__step-line {
+    flex: 1;
+    height: 1px;
+    background-image: linear-gradient(to right, $color-ink-fade 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    margin: 0 16px;
+    opacity: 0.4;
+  }
+
+  // ── Form sections ────────────────────────────────────
+  &__section {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    padding: 36px;
+    margin-bottom: 20px;
+
+    @include sm-down { padding: 24px; }
+  }
+
+  &__section-title {
+    @include text-display(1.5rem);
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed rgba($color-ink, 0.15);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @include sm-down { grid-template-columns: 1fr; }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &--full { grid-column: 1 / -1; }
+
+    span {
+      font-family: $font-mono;
+      font-size: 0.56rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+
+      em { font-style: italic; text-transform: none; font-family: $font-serif; color: $color-ink-fade; }
+    }
+
+    input, textarea, select {
+      padding: 13px 16px;
+      border: 1px solid rgba($color-ink, 0.18);
+      background: $color-paper;
+      font-family: $font-serif;
+      font-size: 0.95rem;
+      color: $color-ink;
+      width: 100%;
+      transition: border-color $transition-normal, box-shadow $transition-normal;
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: $color-terracotta;
+        box-shadow: 0 0 0 3px rgba($color-terracotta, 0.08);
+      }
+    }
+  }
+
+  // ── Payment mode cards ───────────────────────────────
+  &__payment-modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+
+    @include sm-down { grid-template-columns: 1fr; }
+  }
+
+  &__mode-card {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    border: 1.5px solid rgba($color-ink, 0.15);
+    background: $color-paper;
+    cursor: pointer;
+    text-align: left;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: rgba($color-terracotta, 0.4);
+      background: rgba($color-terracotta, 0.02);
+    }
+
+    &--active {
+      border-color: $color-terracotta;
+      background: rgba($color-terracotta, 0.04);
+      box-shadow: 0 0 0 1px $color-terracotta;
+    }
+  }
+
+  &__mode-icon { font-size: 1.4rem; }
+
+  &__mode-body { display: flex; flex-direction: column; gap: 3px; }
+
+  &__mode-title {
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    color: $color-ink;
+    font-weight: $fw-regular;
+  }
+
+  &__mode-desc {
+    font-family: $font-serif;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: $color-ink-fade;
+  }
+
+  &__mode-amount {
+    @include text-display-italic(1.2rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    white-space: nowrap;
+  }
+
+  // ── Submit button ─────────────────────────────────────
+  &__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 17px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal, gap $transition-normal;
+
+    &:hover:not(:disabled) { background: $color-terracotta; gap: 16px; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &__back-btn {
+    margin-top: 16px;
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color $transition-normal;
+    &:hover { color: $color-ink; }
+  }
+
+  // ── Stripe payment form ──────────────────────────────
+  &__payment-form { display: flex; flex-direction: column; gap: 24px; }
+
+  &__payment-summary {
+    background: $color-paper;
+    border: 1px solid rgba($color-ink, 0.1);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    color: $color-ink-soft;
+
+    &--muted { color: $color-ink-fade; font-style: italic; font-size: 0.85rem; }
+  }
+
+  &__payment-amount {
+    @include text-display-italic(1.2rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+  }
+
+  &__stripe-element {
+    padding: 4px 0;
+  }
+
+  &__pay-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: $color-terracotta;
+    color: $color-paper-crisp;
+    padding: 17px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal;
+
+    &:hover:not(:disabled) { background: $color-terracotta-deep; }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  &__pay-spinner {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid rgba($color-paper-crisp, 0.3);
+    border-top-color: $color-paper-crisp;
+    border-radius: 50%;
+    animation: checkout-spin 0.6s linear infinite;
+  }
+
+  // ── Order summary sidebar ────────────────────────────
+  &__summary {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    padding: 28px;
+    position: sticky;
+    top: 100px;
+  }
+
+  &__summary-title {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed rgba($color-ink, 0.15);
+  }
+
+  &__summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  &__summary-row {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 8px;
+    align-items: baseline;
+    font-family: $font-serif;
+    font-size: 0.88rem;
+    color: $color-ink-soft;
+  }
+
+  &__summary-qty {
+    font-family: $font-mono;
+    font-size: 0.62rem;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+  }
+
+  &__summary-name { line-height: 1.3; }
+
+  &__summary-price {
+    font-family: $font-serif;
+    color: $color-ink;
+    white-space: nowrap;
+  }
+
+  &__summary-divider {
+    height: 1px;
+    background-image: linear-gradient(to right, $color-ink 50%, transparent 50%);
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.2;
+    margin: 16px 0;
+  }
+
+  &__summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: $font-serif;
+    font-size: 0.9rem;
+    color: $color-ink-soft;
+    margin-bottom: 8px;
+  }
+
+  &__summary-total {
+    font-family: $font-serif;
+    color: $color-ink;
+    font-weight: $fw-regular;
+  }
+
+  &__summary-charge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    span:first-child {
+      font-family: $font-mono;
+      font-size: 0.56rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+    }
+  }
+
+  &__summary-charge {
+    @include text-display-italic(1.6rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    line-height: 1;
+  }
+
+  &__summary-remaining-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: $font-serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: $color-ink-fade;
+    margin-bottom: 16px;
+  }
+
+  &__pickup-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba($color-olive, 0.1);
+    border: 1px solid rgba($color-olive, 0.2);
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-olive;
+    font-weight: $fw-medium;
+  }
+
+  // ── Success screen ───────────────────────────────────
+  &__success {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px 80px;
+
+    @include sm-down { padding: 100px 24px 60px; }
+  }
+
+  &__success-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: $color-olive;
+    color: $color-paper-crisp;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    box-shadow: 0 0 0 8px rgba($color-olive, 0.12);
+  }
+
+  &__success-folio {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-olive;
+    font-weight: $fw-medium;
+    margin-bottom: 16px;
+  }
+
+  &__success-title {
+    @include text-display(clamp(2.4rem, 5vw, 4rem));
+    line-height: 1;
+    margin-bottom: 24px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__success-sub {
+    font-family: $font-serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: $color-ink-soft;
+    max-width: 520px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  &__success-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 15px 28px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal;
+    &:hover { background: $color-terracotta; }
+  }
+}
+
+@keyframes checkout-spin {
+  to { transform: rotate(360deg); }
+}
+
+.checkout__stripe-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0;
+  font-family: $font-serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: $color-ink-fade;
+}

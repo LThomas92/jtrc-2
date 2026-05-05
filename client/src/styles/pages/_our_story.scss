@@ -1,0 +1,632 @@
+@use "../abstracts" as *;
+
+.story {
+  padding-top: $nav-height;
+  background: $color-paper;
+  overflow: hidden;
+
+  // ── Chapter bar ─────────────────────────────────────
+  &__chapter-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 48px;
+    border-bottom: 1px solid rgba($color-ink, 0.1);
+
+    @include md-down { padding: 16px 24px; }
+  }
+
+  &__chapter-rule {
+    flex: 1;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba($color-ink, 0.2) 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+  }
+
+  &__chapter-label {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    white-space: nowrap;
+  }
+
+  // ── Opening spread ───────────────────────────────────
+  &__opening {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 85vh;
+    max-width: $container-2xl;
+    margin: 0 auto;
+    position: relative;
+
+    // Gutter rule between columns
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba($color-ink, 0.12) 10%,
+        rgba($color-ink, 0.18) 50%,
+        rgba($color-ink, 0.12) 90%,
+        transparent 100%
+      );
+
+      @include lg-down { display: none; }
+    }
+
+    @include lg-down {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+  }
+
+  &__opening-left {
+    padding: 80px 64px 80px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+
+    @include lg-down { padding: 60px 24px 40px; }
+  }
+
+  &__page-num {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    &::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: $color-ink-fade;
+    }
+  }
+
+  &__heading {
+    @include text-display(clamp(2.6rem, 4.5vw, 4.8rem));
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+    color: $color-ink;
+
+    em {
+      font-style: italic;
+      color: $color-terracotta;
+    }
+  }
+
+  &__heading-ul {
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: -2%;
+      right: -2%;
+      height: 14px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M2 8 Q 50 2, 100 6 T 198 5' stroke='%23C8873A' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/100% 100%;
+    }
+  }
+
+  &__heading-note {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  // ── Hero photo (right column) ────────────────────────
+  &__opening-right {
+    padding: 60px 48px 60px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    @include lg-down { padding: 0 24px 60px; }
+  }
+
+  &__hero-frame {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background: $color-paper-crisp;
+    padding: 16px 16px 72px;
+    box-shadow: $shadow-lifted;
+    transform: rotate(1deg);
+
+    @include lg-down { transform: none; max-width: 100%; }
+  }
+
+  &__hero-tape {
+    top: -14px;
+    left: 38%;
+    transform: rotate(-3deg);
+  }
+
+  &__hero-img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: linear-gradient(155deg, #1a1008 0%, #3a2518 30%, #6B3B1E 65%, #a05828 100%);
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+  }
+
+  &__hero-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  &__hero-caption {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    @include text-hand(1.4rem);
+    color: $color-ink;
+  }
+
+  // Postmark stamp
+  &__stamp {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1.5px solid rgba($color-ink, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-12deg);
+    z-index: 10;
+    background: $color-paper-crisp;
+
+    @include lg-down { display: none; }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 1px dashed rgba($color-ink, 0.25);
+      border-radius: 50%;
+    }
+  }
+
+  &__stamp-inner {
+    text-align: center;
+    font-family: $font-mono;
+    font-size: 0.45rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-ink-soft;
+    font-weight: $fw-medium;
+    line-height: 1.4;
+  }
+
+  &__stamp-main {
+    @include text-display-italic(0.8rem);
+    letter-spacing: -0.01em;
+    text-transform: none;
+    display: block;
+    margin: 2px 0;
+    font-weight: $fw-medium;
+  }
+
+  // ── Full-width dashed rule ────────────────────────────
+  &__rule-full {
+    height: 1px;
+    background-image: linear-gradient(to right, rgba($color-ink, 0.15) 50%, transparent 50%);
+    background-size: 8px 1px;
+    background-repeat: repeat-x;
+    margin: 0;
+  }
+
+  // ── Body spread ──────────────────────────────────────
+  &__body-spread {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    max-width: $container-2xl;
+    margin: 0 auto;
+
+    @include lg-down { grid-template-columns: 1fr; }
+  }
+
+  // ── Sidebar annotation ───────────────────────────────
+  &__annotation {
+    padding: 80px 40px 80px 48px;
+    border-right: 1px solid rgba($color-ink, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    @include lg-down { display: none; }
+  }
+
+  &__annotation-line {
+    height: 1px;
+    background-image: linear-gradient(to right, rgba($color-ink, 0.2) 50%, transparent 50%);
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
+    margin: 4px 0;
+  }
+
+  &__annotation-text {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: $color-terracotta;
+      font-size: 0.7rem;
+      line-height: 1;
+    }
+  }
+
+  // ── Narrative text ───────────────────────────────────
+  &__narrative {
+    padding: 80px 80px 80px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    @include xl-down { padding: 80px 48px; }
+    @include lg-down { padding: 60px 24px; }
+  }
+
+  &__body {
+    font-family: $font-serif;
+    font-size: 1.08rem;
+    line-height: 1.85;
+    color: $color-ink-soft;
+
+    &--dropcap::first-letter {
+      @include text-display-italic(4rem);
+      font-weight: $fw-medium;
+      float: left;
+      line-height: 0.85;
+      padding: 8px 12px 0 0;
+      color: $color-terracotta;
+    }
+  }
+
+  // ── Pull quote ───────────────────────────────────────
+  &__pull-quote {
+    position: relative;
+    padding: 36px 40px 36px 40px;
+    background: $color-paper-deep;
+    border-left: 3px solid $color-terracotta;
+    margin: 8px 0;
+
+    p {
+      @include text-display-italic(1.3rem);
+      line-height: 1.55;
+      color: $color-ink;
+      margin-bottom: 28px;
+    }
+  }
+
+  &__pull-quote-mark {
+    position: absolute;
+    top: -8px;
+    left: 32px;
+    @include text-display-italic(6rem);
+    color: $color-terracotta;
+    opacity: 0.18;
+    line-height: 1;
+    pointer-events: none;
+    font-weight: $fw-medium;
+  }
+
+  &__pull-quote-attr {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  &__signature {
+    @include text-hand(2.2rem);
+    color: $color-ink;
+    transform: rotate(-2deg);
+    line-height: 0.9;
+    flex-shrink: 0;
+  }
+
+  &__attr-line {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: 4px;
+  }
+
+  &__attr-name {
+    @include text-display-italic(0.9rem);
+    color: $color-ink;
+  }
+
+  &__attr-role {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  // ── Stats band ───────────────────────────────────────
+  &__stats-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: $color-ink;
+    gap: 1px;
+    background-image: none;
+
+    // The gap between cells is the ink showing through
+    > * { background: $color-ink; }
+
+    @include md-down { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  &__stat {
+    padding: 60px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    @include md-down { padding: 40px 32px; }
+  }
+
+  &__stat-value {
+    @include text-display-italic(clamp(2.8rem, 4vw, 4rem));
+    color: $color-paper-crisp;
+    line-height: 1;
+    font-weight: $fw-medium;
+    letter-spacing: -0.02em;
+  }
+
+  &__stat-label {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: $color-ochre;
+    font-weight: $fw-medium;
+    padding-top: 8px;
+    border-top: 1px solid rgba($color-paper-crisp, 0.12);
+  }
+
+  // ── Pillars section ──────────────────────────────────
+  &__pillars-section {
+    padding: 120px 48px;
+    background: $color-paper-crisp;
+    position: relative;
+
+    @include md-down { padding: 80px 24px; }
+  }
+
+  &__pillars-header {
+    max-width: $container-2xl;
+    margin: 0 auto 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+
+    @include md-down { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+  }
+
+  &__pillars-folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__pillars-rule {
+    flex: 1;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba($color-ink, 0.18) 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+  }
+
+  &__pillars-title {
+    @include text-display(clamp(2rem, 3.5vw, 3.2rem));
+    line-height: 1.05;
+    color: $color-ink;
+
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__pillars {
+    max-width: $container-2xl;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba($color-ink, 0.1);
+
+    @include lg-down  { grid-template-columns: repeat(2, 1fr); }
+    @include sm-down  { grid-template-columns: 1fr; }
+  }
+
+  &__pillar {
+    background: $color-paper-crisp;
+    padding: 40px 36px;
+    transition: background $transition-normal;
+
+    &:hover { background: $color-paper; }
+
+    @include md-down { padding: 32px 24px; }
+  }
+
+  &__pillar-num {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 20px;
+  }
+
+  &__pillar-divider {
+    width: 32px;
+    height: 2px;
+    background: $color-terracotta;
+    margin-bottom: 20px;
+  }
+
+  &__pillar-title {
+    @include text-display(1.15rem);
+    color: $color-ink;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  &__pillar-body {
+    font-family: $font-serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: $color-ink-soft;
+    line-height: 1.7;
+  }
+
+  // ── CTA ─────────────────────────────────────────────
+  &__cta {
+    background: $color-paper-deep;
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__cta-inner {
+    max-width: $container-2xl;
+    margin: 0 auto;
+    padding: 120px 48px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+
+    @include md-down { padding: 80px 24px; }
+  }
+
+  &__cta-folio {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &::before, &::after {
+      content: '';
+      width: 48px;
+      height: 1px;
+      background: $color-terracotta;
+    }
+  }
+
+  &__cta-title {
+    @include text-display(clamp(2.4rem, 4vw, 4rem));
+    line-height: 1.05;
+    color: $color-ink;
+    max-width: 600px;
+
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__cta-sub {
+    font-family: $font-serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: $color-ink-soft;
+    max-width: 480px;
+    line-height: 1.75;
+  }
+
+  &__cta-actions {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__cta-link {
+    font-family: $font-serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: $color-ink-soft;
+    transition: color $transition-normal;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      color: $color-terracotta;
+      border-bottom-color: $color-terracotta;
+    }
+  }
+}

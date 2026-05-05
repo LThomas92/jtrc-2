@@ -1,0 +1,190 @@
+@use "../abstracts" as *;
+
+// ═══════════════════════════════════════════════════════════
+//  FAQ PAGE
+// ═══════════════════════════════════════════════════════════
+.faq {
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+
+  &__section {}
+
+  &__section-label {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba($color-ink, 0.15);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__item {
+    border: 1px solid rgba($color-ink, 0.1);
+    background: $color-paper-crisp;
+    transition: border-color $transition-normal;
+
+    &--open {
+      border-color: rgba($color-ink, 0.2);
+      border-left: 3px solid $color-terracotta;
+    }
+  }
+
+  &__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    padding: 20px 24px;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: background $transition-normal;
+
+    &:hover { background: $color-paper; }
+
+    span:first-child {
+      font-family: $font-serif;
+      font-size: 1rem;
+      color: $color-ink;
+      line-height: 1.4;
+    }
+  }
+
+  &__chevron {
+    font-family: $font-mono;
+    font-size: 1.1rem;
+    color: $color-terracotta;
+    flex-shrink: 0;
+    font-weight: $fw-medium;
+    line-height: 1;
+  }
+
+  &__answer {
+    padding: 0 24px 20px;
+    font-family: $font-serif;
+    font-size: 0.93rem;
+    color: $color-ink-soft;
+    line-height: 1.75;
+    font-style: italic;
+    border-top: 1px dashed rgba($color-ink, 0.08);
+    padding-top: 16px;
+    background: $color-paper;
+  }
+
+  &__cta {
+    padding: 48px;
+    text-align: center;
+    background: $color-ink;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    p {
+      font-family: $font-serif;
+      font-style: italic;
+      color: rgba($color-paper-crisp, 0.7);
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: $color-terracotta;
+      &:hover { background: rgba($color-terracotta, 0.8); }
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  POLICY & PRIVACY PAGES
+// ═══════════════════════════════════════════════════════════
+.policy {
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  &__section {
+    padding: 32px;
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.08);
+    border-left: 3px solid $color-paper-deep;
+    transition: border-left-color $transition-normal;
+
+    &:hover { border-left-color: $color-terracotta; }
+
+    p {
+      font-family: $font-serif;
+      font-size: 0.93rem;
+      color: $color-ink-soft;
+      line-height: 1.8;
+      margin-bottom: 14px;
+
+      &:last-child { margin-bottom: 0; }
+
+      a {
+        color: $color-terracotta;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+  }
+
+  &__heading {
+    @include text-display(1.3rem);
+    color: $color-ink;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba($color-ink, 0.12);
+  }
+
+  &__list {
+    padding-left: 0;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+
+    li {
+      font-family: $font-serif;
+      font-size: 0.93rem;
+      color: $color-ink-soft;
+      line-height: 1.65;
+      padding-left: 20px;
+      position: relative;
+
+      &::before {
+        content: '✦';
+        position: absolute;
+        left: 0;
+        color: $color-terracotta;
+        font-size: 0.5rem;
+        top: 6px;
+      }
+
+      strong {
+        color: $color-ink;
+        font-style: normal;
+        font-weight: $fw-medium;
+      }
+    }
+  }
+}

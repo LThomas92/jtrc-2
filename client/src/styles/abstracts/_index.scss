@@ -1,0 +1,4 @@
+// Forward all abstracts through a single entry.
+// Usage in any partial:  @use "../abstracts" as *;
+@forward "./variables";
+@forward "./mixins";

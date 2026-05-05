@@ -1,0 +1,620 @@
+@use "../abstracts" as *;
+
+// ═══════════════════════════════════════════════════════════
+//  PUBLIC CONTACT PAGE
+// ═══════════════════════════════════════════════════════════
+.contact {
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 48px;
+    align-items: flex-start;
+
+    @include lg-down { grid-template-columns: 1fr; }
+  }
+
+  &__form { display: flex; flex-direction: column; gap: 0; }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+
+    @include sm-down { grid-template-columns: 1fr; }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &--full { grid-column: 1 / -1; }
+
+    span {
+      font-family: $font-mono;
+      font-size: 0.56rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+
+      em { font-style: italic; text-transform: none; font-family: $font-serif; }
+    }
+
+    input, select, textarea {
+      padding: 13px 16px;
+      border: 1px solid rgba($color-ink, 0.18);
+      background: $color-paper-crisp;
+      font-family: $font-serif;
+      font-size: 0.95rem;
+      color: $color-ink;
+      width: 100%;
+      transition: border-color $transition-normal, box-shadow $transition-normal;
+      resize: vertical;
+      appearance: none;
+
+      &:focus {
+        outline: none;
+        border-color: $color-terracotta;
+        box-shadow: 0 0 0 3px rgba($color-terracotta, 0.08);
+      }
+
+      &::placeholder { color: $color-ink-fade; font-style: italic; }
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B5D47' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+  }
+
+  &__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 16px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal, gap $transition-normal;
+
+    &:hover:not(:disabled) { background: $color-terracotta; gap: 16px; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  // ─── Info sidebar ─────────────────────────────────────
+  &__info {
+    background: $color-ink;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: sticky;
+    top: 100px;
+
+    @include lg-down { position: static; }
+  }
+
+  &__info-block { display: flex; flex-direction: column; gap: 4px; }
+
+  &__info-label {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba($color-paper-crisp, 0.45);
+    font-weight: $fw-medium;
+  }
+
+  &__info-value {
+    font-family: $font-serif;
+    font-style: italic;
+    color: $color-paper-crisp;
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+
+  &__pkg-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: $color-terracotta;
+    color: $color-paper-crisp;
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    margin-top: 8px;
+    transition: background $transition-normal;
+
+    &:hover { background: rgba($color-terracotta, 0.8); }
+  }
+
+  // ─── Success screen ───────────────────────────────────
+  &__success {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px;
+
+    @include sm-down { padding: 100px 24px; }
+  }
+
+  &__success-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: $color-olive;
+    color: $color-paper-crisp;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    box-shadow: 0 0 0 8px rgba($color-olive, 0.12);
+  }
+
+  &__success-folio {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-olive;
+    font-weight: $fw-medium;
+    margin-bottom: 16px;
+  }
+
+  &__success-title {
+    @include text-display(clamp(2.4rem, 5vw, 4rem));
+    line-height: 1;
+    margin-bottom: 20px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__success-sub {
+    font-family: $font-serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: $color-ink-soft;
+    max-width: 480px;
+    line-height: 1.75;
+    margin-bottom: 36px;
+  }
+
+  &__success-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 14px 26px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal;
+    &:hover { background: $color-terracotta; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN — CONTACT MESSAGES
+// ═══════════════════════════════════════════════════════════
+.admin-contact {
+  max-width: 900px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 8px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub { font-family: $font-serif; font-style: italic; color: $color-ink-soft; }
+
+  &__stats {
+    display: flex;
+    gap: 16px;
+    flex-shrink: 0;
+    align-items: flex-start;
+  }
+
+  &__stat {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    text-align: center;
+
+    span { @include text-display-italic(1.8rem); color: $color-ink; display: block; line-height: 1; }
+    &--unread span { color: $color-terracotta; }
+  }
+
+  &__list { display: flex; flex-direction: column; gap: 2px; }
+
+  &__item {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.08);
+    border-left: 3px solid transparent;
+    transition: border-color $transition-normal;
+
+    &--unread { border-left-color: $color-terracotta; background: rgba($color-terracotta, 0.02); }
+    &--open   { border-color: rgba($color-ink, 0.2); border-left-color: $color-ink; }
+  }
+
+  &__summary {
+    display: grid;
+    grid-template-columns: 16px 200px 160px 1fr 100px 24px;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 20px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: background $transition-normal;
+
+    &:hover { background: $color-paper; }
+
+    @include lg-down { grid-template-columns: 16px 1fr auto 24px; }
+  }
+
+  &__unread-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: $color-terracotta;
+    flex-shrink: 0;
+  }
+
+  &__sender { display: flex; flex-direction: column; gap: 2px; }
+
+  &__sender-name {
+    @include text-display-italic(0.95rem);
+    color: $color-ink;
+  }
+
+  &__sender-email {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+    color: $color-ink-fade;
+    @include lg-down { display: none; }
+  }
+
+  &__subject {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $color-ink-soft;
+    font-weight: $fw-medium;
+    @include lg-down { display: none; }
+  }
+
+  &__preview {
+    font-family: $font-serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: $color-ink-fade;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include lg-down { display: none; }
+  }
+
+  &__date {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    color: $color-ink-fade;
+    white-space: nowrap;
+  }
+
+  &__chevron { font-size: 0.56rem; color: $color-ink-fade; }
+
+  &__body {
+    padding: 24px 24px 28px;
+    border-top: 1px dashed rgba($color-ink, 0.12);
+    background: $color-paper;
+  }
+
+  &__meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed rgba($color-ink, 0.1);
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    a { color: $color-terracotta; transition: opacity $transition-normal; &:hover { opacity: 0.8; } }
+  }
+
+  &__meta-label {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__message {
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    color: $color-ink-soft;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    margin-bottom: 24px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    a { text-decoration: none; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN — SITE CONTENT PAGE
+// ═══════════════════════════════════════════════════════════
+.admin-sc {
+  max-width: 860px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+    @include sm-down { flex-direction: column; }
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 8px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub { font-family: $font-serif; font-style: italic; color: $color-ink-soft; }
+
+  &__tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 32px;
+    background: rgba($color-ink, 0.08);
+    padding: 3px;
+    border-radius: $radius-sm;
+    width: fit-content;
+  }
+
+  &__tab {
+    padding: 9px 22px;
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    color: $color-ink-fade;
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-radius: $radius-sm;
+    transition: all $transition-normal;
+
+    &--active { background: $color-paper-crisp; color: $color-ink; box-shadow: $shadow-subtle; }
+    &:hover:not(&--active) { color: $color-ink; }
+  }
+
+  &__section { display: flex; flex-direction: column; gap: 28px; }
+
+  &__section-label {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba($color-ink, 0.12);
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &--grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      @include md-down { grid-template-columns: 1fr; }
+    }
+  }
+
+  &__textarea {
+    padding: 13px 16px;
+    border: 1px solid rgba($color-ink, 0.18);
+    background: $color-paper;
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    color: $color-ink;
+    width: 100%;
+    resize: vertical;
+    line-height: 1.65;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
+
+    &:focus {
+      outline: none;
+      border-color: $color-terracotta;
+      box-shadow: 0 0 0 3px rgba($color-terracotta, 0.08);
+    }
+  }
+
+  &__photo-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: flex-start;
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__photo-preview {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    border: 1px solid rgba($color-ink, 0.1);
+    background: $color-paper-deep;
+
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  }
+
+  &__photo-fields { display: flex; flex-direction: column; gap: 12px; }
+
+  &__featured-dish {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    align-items: flex-start;
+    background: $color-paper;
+    border: 1px solid rgba($color-ink, 0.08);
+    padding: 20px;
+
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__featured-photo-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__featured-preview {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: $color-paper-deep;
+    border: 1px solid rgba($color-ink, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &--portrait {
+      aspect-ratio: 3/4;
+    }
+  }
+
+  &__featured-empty {
+    font-size: 2.4rem;
+    opacity: 0.2;
+  }
+
+  &__featured-upload {
+    padding: 14px 12px !important;
+
+    .admin-menu__upload-hint {
+      font-size: 0.68rem;
+    }
+  }
+
+  &__featured-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 4px;
+  }
+
+  &__featured-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+}
+
+.admin-sc__photo-preview--hero {
+  aspect-ratio: 4/5;  // matches hero__photo tile ratio
+}
+
+// hero__photo-img — real photo inside the polaroid tile
+.hero__photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: inherit;
+}

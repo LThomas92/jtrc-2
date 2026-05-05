@@ -1,0 +1,194 @@
+@use "../abstracts" as *;
+
+.cta {
+  padding: 140px 48px;
+  background: $color-terracotta;
+  color: $color-paper-crisp;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+
+  @include md-down { padding: 80px 24px; }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.5;
+  }
+
+  &__flap {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 1px;
+    background: rgba($color-paper-crisp, 0.3);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 300px solid transparent;
+      border-right: 300px solid transparent;
+      border-top: 120px solid rgba($color-ink, 0.08);
+      pointer-events: none;
+    }
+  }
+
+  &__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba($color-paper-crisp, 0.75);
+    font-weight: $fw-medium;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    &::before,
+    &::after {
+      content: '';
+      width: 50px;
+      height: 1px;
+      background: rgba($color-paper-crisp, 0.5);
+    }
+  }
+
+  &__heading {
+    @include text-display(clamp(3.2rem, 7vw, 6.8rem));
+    line-height: 0.98;
+    margin-bottom: 40px;
+
+    em { font-style: italic; color: $color-ochre; }
+  }
+
+  &__script {
+    @include text-hand;
+    color: $color-paper-crisp;
+    display: inline-block;
+    transform: rotate(-2deg);
+    font-size: 1.15em;
+    line-height: 0.85;
+  }
+
+  &__sub {
+    font-family: $font-serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.75;
+    color: rgba($color-paper-crisp, 0.85);
+    max-width: 520px;
+    margin: 0 auto 48px;
+  }
+
+  &__btns {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 17px 32px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    transition: background $transition-normal, gap $transition-normal;
+
+    &:hover {
+      background: $color-paper-crisp;
+      color: $color-terracotta;
+      gap: 20px;
+
+      .cta__arrow {
+        background: $color-ink;
+        color: $color-paper-crisp;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  &__arrow {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: $color-paper-crisp;
+    color: $color-ink;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: all $transition-normal;
+  }
+
+  &__ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: $color-paper-crisp;
+    padding: 17px 30px;
+    border-radius: $radius-full;
+    border: 1px solid rgba($color-paper-crisp, 0.45);
+    font-family: $font-sans;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    transition: background $transition-normal, border-color $transition-normal;
+
+    &:hover { background: rgba($color-paper-crisp, 0.1); border-color: $color-paper-crisp; }
+  }
+
+  &__signature {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__sig-text {
+    @include text-hand(2.4rem);
+    font-weight: $fw-semibold;
+    color: $color-paper-crisp;
+    transform: rotate(-2deg);
+    line-height: 0.9;
+  }
+
+  &__sig-label {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba($color-paper-crisp, 0.6);
+    margin-top: 8px;
+    font-weight: $fw-medium;
+  }
+}

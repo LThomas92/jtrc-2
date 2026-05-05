@@ -1,0 +1,1978 @@
+@use "../abstracts" as *;
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN LOGIN
+// ═══════════════════════════════════════════════════════════
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: $color-paper;
+
+  &__card {
+    width: 100%;
+    max-width: 440px;
+    background: $color-paper-crisp;
+    padding: 48px;
+    border: 1px solid rgba($color-ink, 0.1);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04), 0 20px 50px -20px rgba($color-ink, 0.25);
+    transform: rotate(-0.5deg);
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 14px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub {
+    font-family: $font-serif;
+    font-style: italic;
+    color: $color-ink-soft;
+    margin-bottom: 36px;
+    font-size: 0.95rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    span {
+      font-family: $font-mono;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+    }
+
+    input {
+      padding: 14px 16px;
+      border: 1px solid rgba($color-ink, 0.2);
+      background: $color-paper;
+      font-family: $font-serif;
+      font-size: 0.98rem;
+      color: $color-ink;
+      transition: border-color $transition-normal;
+      &:focus { outline: none; border-color: $color-terracotta; }
+    }
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 15px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    transition: background $transition-normal, gap $transition-normal;
+    &:hover:not(:disabled) { background: $color-terracotta; gap: 16px; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN LAYOUT
+// ═══════════════════════════════════════════════════════════
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  background: $color-paper;
+
+  @include md-down { grid-template-columns: 1fr; }
+
+  &__sidebar {
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+
+    @include md-down {
+      position: static;
+      height: auto;
+      flex-direction: row;
+      align-items: center;
+      padding: 16px 24px;
+      gap: 24px;
+    }
+  }
+
+  &__brand {
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba($color-paper-crisp, 0.1);
+    flex-shrink: 0;
+    @include md-down { padding-bottom: 0; border: none; }
+  }
+
+  &__brand-title {
+    @include text-display-italic(1.4rem);
+    color: $color-paper-crisp;
+    margin-bottom: 4px;
+  }
+
+  &__brand-sub {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-ochre;
+    font-weight: $fw-medium;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    @include md-down { flex-direction: row; }
+  }
+
+  &__link {
+    padding: 12px 16px;
+    font-family: $font-mono;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba($color-paper-crisp, 0.5);
+    font-weight: $fw-medium;
+    border-radius: $radius-sm;
+    transition: all $transition-normal;
+
+    &:hover { color: $color-paper-crisp; background: rgba($color-paper-crisp, 0.05); }
+    &--active { background: $color-terracotta; color: $color-paper-crisp; }
+  }
+
+  &__user {
+    padding-top: 24px;
+    border-top: 1px solid rgba($color-paper-crisp, 0.1);
+    margin-top: auto;
+    @include md-down { padding-top: 0; border: none; margin-top: 0; }
+  }
+
+  &__user-name {
+    @include text-display-italic(0.95rem);
+    color: $color-paper-crisp;
+    margin-bottom: 10px;
+  }
+
+  &__logout {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba($color-paper-crisp, 0.5);
+    cursor: pointer;
+    transition: color $transition-normal;
+    font-weight: $fw-medium;
+    &:hover { color: $color-terracotta; }
+  }
+
+  &__main {
+    padding: 48px;
+    overflow-y: auto;
+    min-height: 100vh;
+    background: $color-paper;
+    @include md-down { padding: 24px; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN DASHBOARD
+// ═══════════════════════════════════════════════════════════
+.admin-dash {
+  max-width: 1100px;
+
+  &__header { margin-bottom: 48px; }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 14px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  &__sub {
+    font-family: $font-serif;
+    font-style: italic;
+    color: $color-ink-soft;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 56px;
+    @include md-down { grid-template-columns: repeat(2, 1fr); }
+    @include sm-down { grid-template-columns: 1fr; }
+  }
+
+  &__stat {
+    background: $color-paper-crisp;
+    padding: 28px;
+    border: 1px solid rgba($color-ink, 0.1);
+    position: relative;
+    box-shadow: $shadow-subtle;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: $color-ink-fade;
+    }
+
+    &--terracotta::before { background: $color-terracotta; }
+    &--ochre::before      { background: $color-ochre; }
+    &--olive::before      { background: $color-olive; }
+    &--ink::before        { background: $color-ink; }
+  }
+
+  &__stat-label {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 12px;
+  }
+
+  &__stat-value {
+    @include text-display-italic(2.2rem);
+    color: $color-ink;
+    line-height: 1;
+  }
+
+  &__section-title {
+    @include text-display-italic(1.5rem);
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+  }
+
+  &__table {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    box-shadow: $shadow-subtle;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.2fr 1fr 1fr;
+    gap: 20px;
+    padding: 18px 24px;
+    align-items: center;
+    font-family: $font-serif;
+    color: $color-ink-soft;
+    font-size: 0.92rem;
+
+    & + & { border-top: 1px solid rgba($color-ink, 0.08); }
+
+    &--head {
+      background: $color-paper;
+      font-family: $font-mono;
+      font-size: 0.56rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+    }
+
+    @include md-down { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    border-radius: $radius-full;
+
+    &--pending   { background: rgba($color-ochre, 0.2);      color: $color-ochre; }
+    &--confirmed { background: rgba($color-olive, 0.2);      color: $color-olive; }
+    &--completed { background: rgba($color-ink, 0.12);       color: $color-ink; }
+    &--cancelled { background: rgba($color-terracotta, 0.2); color: $color-terracotta; }
+  }
+
+  &__total {
+    @include text-display-italic(1.05rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+  }
+
+  &__empty {
+    padding: 40px;
+    text-align: center;
+    font-family: $font-serif;
+    font-style: italic;
+    color: $color-ink-fade;
+    background: $color-paper-crisp;
+    border: 1px dashed rgba($color-ink, 0.15);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN ORDERS
+// ═══════════════════════════════════════════════════════════
+.admin-orders {
+  max-width: 1100px;
+
+  &__header { margin-bottom: 36px; }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 14px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 10px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub { font-family: $font-serif; font-style: italic; color: $color-ink-soft; }
+
+  &__filter-row {
+    display: flex;
+    margin-bottom: 32px;
+    padding: 12px 0;
+    border-top: 1px solid rgba($color-ink, 0.15);
+    border-bottom: 1px solid rgba($color-ink, 0.15);
+    flex-wrap: wrap;
+  }
+
+  &__filter-btn {
+    padding: 6px 18px;
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-soft;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    transition: color $transition-normal;
+    background: none;
+    border: none;
+    & + & { border-left: 1px solid rgba($color-ink, 0.15); }
+    &--active { color: $color-terracotta; }
+  }
+
+  &__list { display: flex; flex-direction: column; gap: 16px; }
+
+  &__order {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    padding: 28px 32px;
+    box-shadow: $shadow-subtle;
+  }
+
+  &__order-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    @include sm-down { flex-direction: column; }
+  }
+
+  &__order-id {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 6px;
+  }
+
+  &__order-customer {
+    @include text-display-italic(1.4rem);
+    color: $color-ink;
+    margin-bottom: 4px;
+  }
+
+  &__order-meta { font-family: $font-serif; font-size: 0.85rem; color: $color-ink-fade; font-style: italic; }
+
+  &__order-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+    @include sm-down { align-items: flex-start; }
+  }
+
+  &__order-total {
+    @include text-display-italic(1.6rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+  }
+
+  &__status-select {
+    padding: 6px 14px;
+    border: 1px solid rgba($color-ink, 0.2);
+    background: $color-paper;
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    border-radius: $radius-full;
+    cursor: pointer;
+
+    &--pending   { background: rgba($color-ochre, 0.2);      color: $color-ochre;      border-color: $color-ochre; }
+    &--confirmed { background: rgba($color-olive, 0.2);      color: $color-olive;      border-color: $color-olive; }
+    &--completed { background: rgba($color-ink, 0.12);       color: $color-ink; }
+    &--cancelled { background: rgba($color-terracotta, 0.2); color: $color-terracotta; border-color: $color-terracotta; }
+  }
+
+  &__order-divider {
+    height: 1px;
+    background-image: linear-gradient(to right, $color-ink 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.3;
+    margin: 24px 0;
+  }
+
+  &__order-body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__order-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: $font-serif;
+    color: $color-ink-soft;
+    font-size: 0.92rem;
+  }
+
+  &__detail-label {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__order-items {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__item-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: $font-serif;
+    font-size: 0.9rem;
+    color: $color-ink-soft;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba($color-ink, 0.1);
+  }
+
+  &__order-notes {
+    grid-column: 1 / -1;
+    padding: 16px;
+    background: $color-paper;
+    border-left: 2px solid $color-ochre;
+
+    p {
+      font-family: $font-serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      color: $color-ink-soft;
+      margin-top: 6px;
+    }
+  }
+
+  &__empty {
+    padding: 60px 40px;
+    text-align: center;
+    font-family: $font-serif;
+    font-style: italic;
+    color: $color-ink-fade;
+    background: $color-paper-crisp;
+    border: 1px dashed rgba($color-ink, 0.15);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN MENU PAGE
+// ═══════════════════════════════════════════════════════════
+.admin-menu {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 48px;
+  align-items: flex-start;
+  max-width: 1200px;
+
+  @include lg-down { grid-template-columns: 1fr; }
+
+  &__variations {
+    padding-top: 20px;
+    border-top: 1px dashed rgba($color-ink, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__variations-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__variations-empty {
+    font-family: $font-serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: $color-ink-fade;
+    padding: 12px 0;
+  }
+
+  &__var-group {
+    border: 1px solid rgba($color-ink, 0.12);
+    background: $color-paper;
+  }
+
+  &__var-group-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-bottom: 1px dashed rgba($color-ink, 0.1);
+    flex-wrap: wrap;
+  }
+
+  &__input--var-name { flex: 1; min-width: 120px; }
+
+  &__select--sm {
+    padding: 10px 32px 10px 12px;
+    font-size: 0.78rem;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  &__var-required {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    padding: 5px 10px;
+    border-radius: $radius-full;
+    cursor: pointer;
+    border: 1px solid rgba($color-ink, 0.15);
+    background: none;
+    color: $color-ink-fade;
+    transition: all $transition-normal;
+    flex-shrink: 0;
+
+    &--on {
+      background: rgba($color-terracotta, 0.1);
+      color: $color-terracotta;
+      border-color: rgba($color-terracotta, 0.3);
+    }
+  }
+
+  &__var-options {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__var-option-row {
+    display: grid;
+    grid-template-columns: 1fr 110px 32px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__var-price-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__var-price-prefix {
+    position: absolute;
+    left: 10px;
+    font-family: $font-mono;
+    font-size: 0.72rem;
+    color: $color-ink-fade;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &__input--price-add {
+    padding-left: 28px !important;
+    text-align: right;
+  }
+
+  &__var-add-option {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    transition: color $transition-normal;
+    align-self: flex-start;
+
+    &:hover { color: $color-terracotta; }
+  }
+
+  &__card-variations-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba($color-ochre, 0.85);
+    color: $color-ink;
+    font-family: $font-mono;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    padding: 4px 9px;
+    z-index: 4;
+    backdrop-filter: blur(4px);
+  }
+
+  &__panel {
+    position: sticky;
+    top: 24px;
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    box-shadow: $shadow-card;
+    @include lg-down { position: static; }
+  }
+
+  &__panel-header {
+    padding: 28px 32px 24px;
+    border-bottom: 1px dashed rgba($color-ink, 0.15);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__panel-folio {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 8px;
+  }
+
+  &__panel-title {
+    @include text-display-italic(1.6rem);
+    color: $color-ink;
+    line-height: 1;
+  }
+
+  &__panel-body { padding: 28px 32px 32px; }
+
+  &__cancel-btn {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    cursor: pointer;
+    padding: 6px 0;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: none;
+    white-space: nowrap;
+    transition: all $transition-normal;
+    &:hover { color: $color-terracotta; border-bottom-color: $color-terracotta; }
+  }
+
+  &__form { display: flex; flex-direction: column; gap: 20px; }
+
+  &__field { display: flex; flex-direction: column; gap: 8px; }
+
+  &__label {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__input,
+  &__textarea,
+  &__select {
+    padding: 13px 16px;
+    border: 1px solid rgba($color-ink, 0.18);
+    background: $color-paper;
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    color: $color-ink;
+    width: 100%;
+    appearance: none;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
+
+    &:focus {
+      outline: none;
+      border-color: $color-terracotta;
+      box-shadow: 0 0 0 3px rgba($color-terracotta, 0.08);
+    }
+    &::placeholder { color: $color-ink-fade; font-style: italic; }
+  }
+
+  &__textarea { resize: vertical; min-height: 90px; line-height: $lh-relaxed; }
+
+  &__select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B5D47' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  &__upload-zone {
+    border: 1.5px dashed rgba($color-ink, 0.25);
+    background: $color-paper;
+    padding: 24px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color $transition-normal, background $transition-normal;
+    position: relative;
+
+    &:hover {
+      border-color: $color-terracotta;
+      background: rgba($color-terracotta, 0.03);
+      .admin-menu__upload-icon,
+      .admin-menu__upload-label { color: $color-terracotta; }
+    }
+
+    input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__upload-icon { font-size: 1.4rem; margin-bottom: 8px; color: $color-ink-fade; transition: color $transition-normal; }
+
+  &__upload-label {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    transition: color $transition-normal;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  &__upload-hint { font-family: $font-serif; font-size: 0.78rem; font-style: italic; color: rgba($color-ink-fade, 0.6); }
+
+  &__preview {
+    margin-top: 12px;
+    border: 1px solid rgba($color-ink, 0.1);
+    overflow: hidden;
+    position: relative;
+    img { width: 100%; height: 140px; object-fit: cover; display: block; }
+  }
+
+  &__preview-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba($color-ink, 0.7);
+    padding: 6px 12px;
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-paper-crisp;
+    font-weight: $fw-medium;
+  }
+
+  &__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    padding: 15px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal, gap $transition-normal;
+    margin-top: 4px;
+
+    &:hover { background: $color-terracotta; gap: 14px; }
+    &--editing { background: $color-olive; }
+    &--editing:hover { background: $color-olive-deep; }
+  }
+
+  &__right { display: flex; flex-direction: column; gap: 24px; }
+
+  &__right-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+  }
+
+  &__right-folio {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 6px;
+  }
+
+  &__right-title { @include text-display-italic(1.8rem); color: $color-ink; line-height: 1; }
+
+  &__count {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    text-align: right;
+
+    span { @include text-display-italic(1.6rem); color: $color-terracotta; display: block; line-height: 1; }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__empty-state {
+    grid-column: 1 / -1;
+    padding: 60px 40px;
+    text-align: center;
+    border: 1.5px dashed rgba($color-ink, 0.15);
+    background: $color-paper-crisp;
+    p { font-family: $font-serif; font-style: italic; color: $color-ink-fade; font-size: 1rem; }
+  }
+
+  &__card {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.08);
+    box-shadow: $shadow-card;
+    position: relative;
+    transition: transform $transition-slow, box-shadow $transition-slow;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: $shadow-lifted;
+      .admin-menu__card-actions { opacity: 1; transform: translateY(0); }
+    }
+
+    &--editing {
+      border-color: $color-terracotta;
+      box-shadow: 0 0 0 2px rgba($color-terracotta, 0.15), $shadow-card;
+
+      &::before {
+        content: 'Editing';
+        position: absolute;
+        top: 12px; left: 12px;
+        background: $color-terracotta;
+        color: $color-paper-crisp;
+        font-family: $font-mono;
+        font-size: 0.5rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: $fw-medium;
+        padding: 4px 10px;
+        z-index: 5;
+      }
+    }
+
+    &--deleting {
+      opacity: 0.45;
+      pointer-events: none;
+      transition: opacity $transition-slow;
+    }
+  }
+
+  &__card-img {
+    aspect-ratio: 16/9;
+    position: relative;
+    overflow: hidden;
+    background: $color-paper-deep;
+
+    img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform $transition-slow;
+    }
+
+    .admin-menu__card:hover img { transform: scale(1.04); }
+  }
+
+  &__card-no-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: $color-paper-deep;
+
+    span:first-child { font-size: 1.8rem; opacity: 0.3; }
+    span:last-child {
+      font-family: $font-mono;
+      font-size: 0.52rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+    }
+  }
+
+  &__card-category {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    font-family: $font-mono;
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    padding: 4px 10px;
+    z-index: 2;
+  }
+
+  &__card-body { padding: 18px 20px 20px; }
+
+  &__card-num {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    margin-bottom: 6px;
+  }
+
+  &__card-name { @include text-display(1.2rem); line-height: 1.1; color: $color-ink; margin-bottom: 8px; letter-spacing: -0.015em; }
+
+  &__card-desc {
+    font-family: $font-serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: $color-ink-soft;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    min-height: 48px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px dashed rgba($color-ink, 0.15);
+  }
+
+  &__card-price { @include text-display-italic(1.3rem); color: $color-terracotta; font-weight: $fw-medium; line-height: 1; }
+
+  &__card-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity $transition-normal, transform $transition-normal;
+  }
+
+  &__edit-btn,
+  &__delete-btn {
+    padding: 7px 14px;
+    border-radius: $radius-full;
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal, color $transition-normal;
+  }
+
+  &__edit-btn {
+    background: $color-ink;
+    color: $color-paper-crisp;
+    &:hover { background: $color-ochre; }
+  }
+
+  &__delete-btn {
+    background: rgba($color-terracotta, 0.1);
+    color: $color-terracotta;
+    border: 1px solid rgba($color-terracotta, 0.2);
+    &:hover { background: $color-terracotta; color: $color-paper-crisp; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN PACKAGES PAGE
+// ═══════════════════════════════════════════════════════════
+.admin-pkg {
+  max-width: 900px;
+
+  &__header {
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 14px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 10px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub { font-family: $font-serif; font-style: italic; color: $color-ink-soft; max-width: 520px; line-height: 1.65; }
+
+  &__create-form { margin-bottom: 32px; }
+
+  &__preview-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba($color-ink, 0.1);
+    margin-bottom: 40px;
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__preview-card {
+    background: $color-paper-crisp;
+    padding: 24px 28px 24px 72px;
+    cursor: pointer;
+    position: relative;
+    transition: background $transition-normal;
+    overflow: hidden;
+    user-select: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 24px; bottom: 24px; left: 52px;
+      width: 1px;
+      background-image: linear-gradient(to bottom, $color-ink-fade 50%, transparent 50%);
+      background-size: 1px 5px;
+      background-repeat: repeat-y;
+      opacity: 0.3;
+    }
+
+    &:hover { background: $color-paper-light; }
+    &--featured { background: rgba($color-terracotta, 0.04); .admin-pkg__preview-name em { color: $color-terracotta; } }
+    &--dirty { box-shadow: inset 3px 0 0 $color-ochre; }
+  }
+
+  &__dirty-dot {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: $color-ochre;
+    box-shadow: 0 0 0 3px rgba($color-ochre, 0.2);
+  }
+
+  &__preview-stub {
+    position: absolute;
+    top: 50%; left: 12px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center;
+    font-family: $font-mono;
+    font-size: 0.48rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    white-space: nowrap;
+    font-weight: $fw-medium;
+  }
+
+  &__preview-label { font-family: $font-mono; font-size: 0.54rem; letter-spacing: 0.2em; text-transform: uppercase; color: $color-terracotta; font-weight: $fw-medium; margin-bottom: 6px; }
+  &__preview-name { @include text-display(1.3rem); color: $color-ink; line-height: 1; margin-bottom: 10px; em { font-style: italic; color: $color-ink-soft; } }
+
+  &__preview-price {
+    @include text-display-italic(1.6rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    line-height: 1;
+    span { font-family: $font-serif; font-size: 0.78rem; color: $color-ink-fade; font-style: italic; margin-left: 3px; }
+  }
+
+  &__preview-chevron { position: absolute; bottom: 14px; right: 18px; font-size: 0.6rem; color: $color-ink-fade; }
+
+  &__panels { display: flex; flex-direction: column; gap: 1px; background: rgba($color-ink, 0.1); }
+
+  &__panel {
+    background: $color-paper-crisp;
+    border-left: 3px solid transparent;
+    transition: border-color $transition-normal;
+    &--open { border-left-color: $color-terracotta; }
+  }
+
+  &__panel-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding: 20px 28px;
+    cursor: pointer;
+    text-align: left;
+    background: none;
+    border: none;
+    transition: background $transition-normal;
+    &:hover { background: $color-paper-light; }
+  }
+
+  &__panel-toggle-left { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+  &__panel-folio {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    padding-right: 14px;
+    border-right: 1px solid rgba($color-ink, 0.15);
+  }
+
+  &__panel-name { @include text-display-italic(1.1rem); color: $color-ink; }
+
+  &__unsaved-badge {
+    background: rgba($color-ochre, 0.15);
+    color: $color-ochre;
+    border: 1px solid rgba($color-ochre, 0.3);
+    font-family: $font-mono;
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    padding: 3px 10px;
+    border-radius: $radius-full;
+  }
+
+  &__panel-chevron { font-size: 0.65rem; color: $color-ink-fade; flex-shrink: 0; }
+  &__panel-body { padding: 0 28px 32px; border-top: 1px dashed rgba($color-ink, 0.12); }
+
+  &__form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 28px 0 24px;
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__field { display: flex; flex-direction: column; gap: 8px; &--toggle { justify-content: flex-end; } }
+
+  &__label { font-family: $font-mono; font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase; color: $color-ink-fade; font-weight: $fw-medium; }
+
+  &__input {
+    padding: 12px 16px;
+    border: 1px solid rgba($color-ink, 0.18);
+    background: $color-paper;
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    color: $color-ink;
+    width: 100%;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
+
+    &:focus { outline: none; border-color: $color-terracotta; box-shadow: 0 0 0 3px rgba($color-terracotta, 0.08); }
+    &--prefixed { padding-left: 34px; }
+  }
+
+  &__input-prefix-wrap { position: relative; }
+
+  &__input-prefix {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-family: $font-display;
+    font-style: italic;
+    font-size: 1rem;
+    color: $color-ink-fade;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px 10px 10px;
+    border: 1px solid rgba($color-ink, 0.18);
+    background: $color-paper;
+    cursor: pointer;
+    transition: all $transition-normal;
+    width: fit-content;
+
+    &--on {
+      background: rgba($color-terracotta, 0.06);
+      border-color: $color-terracotta;
+      .admin-pkg__toggle-knob { background: $color-terracotta; }
+      .admin-pkg__toggle-label { color: $color-terracotta; }
+    }
+  }
+
+  &__toggle-knob {
+    width: 40px; height: 22px;
+    background: rgba($color-ink, 0.15);
+    border-radius: $radius-full;
+    position: relative;
+    transition: background $transition-normal;
+    flex-shrink: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      background: $color-paper-crisp;
+      border-radius: 50%;
+      top: 3px; left: 3px;
+      transition: transform $transition-normal;
+      box-shadow: 0 1px 3px rgba($color-ink, 0.2);
+    }
+
+    .admin-pkg__toggle--on &::after { transform: translateX(18px); }
+  }
+
+  &__toggle-label { font-family: $font-mono; font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: $fw-medium; color: $color-ink-fade; transition: color $transition-normal; }
+
+  &__features-section { padding-top: 24px; border-top: 1px dashed rgba($color-ink, 0.12); margin-bottom: 28px; }
+  &__features-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+
+  &__add-feature {
+    font-family: $font-mono;
+    font-size: 0.54rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    padding: 6px 12px;
+    border: 1px solid rgba($color-terracotta, 0.3);
+    border-radius: $radius-full;
+    background: none;
+    transition: all $transition-normal;
+    &:hover { background: $color-terracotta; color: $color-paper-crisp; border-color: $color-terracotta; }
+  }
+
+  &__features-list { display: flex; flex-direction: column; gap: 8px; }
+
+  &__feature-row { display: grid; grid-template-columns: 20px 1fr 32px; align-items: center; gap: 10px; }
+
+  &__feature-bullet { font-family: $font-display; font-size: 0.7rem; color: $color-terracotta; text-align: center; }
+
+  &__feature-input {
+    padding: 10px 14px;
+    border: 1px solid rgba($color-ink, 0.14);
+    background: $color-paper;
+    font-family: $font-serif;
+    font-size: 0.9rem;
+    color: $color-ink;
+    width: 100%;
+    transition: border-color $transition-normal;
+    &:focus { outline: none; border-color: $color-terracotta; }
+    &::placeholder { color: $color-ink-fade; font-style: italic; }
+  }
+
+  &__feature-remove {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    color: $color-ink-fade;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    transition: color $transition-normal, background $transition-normal;
+    &:hover { color: $color-terracotta; background: rgba($color-terracotta, 0.1); }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px dashed rgba($color-ink, 0.12);
+    flex-wrap: wrap;
+  }
+
+  &__reset-btn {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    transition: color $transition-normal;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    &:hover:not(:disabled) { color: $color-ink; }
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
+
+  &__save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: $radius-full;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal, color $transition-normal,
+      transform $transition-normal, gap $transition-normal;
+    background: rgba($color-ink, 0.1);
+    color: $color-ink-fade;
+
+    &--dirty { background: $color-ink; color: $color-paper-crisp; }
+    &--dirty:hover { background: $color-terracotta; gap: 12px; transform: translateY(-1px); }
+    &:disabled { cursor: not-allowed; opacity: 0.6; transform: none; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DELETE CONFIRMATION MODAL
+// ═══════════════════════════════════════════════════════════
+
+// Backdrop — covers the whole screen
+.delete-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba($color-ink, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modal-fade-in 180ms ease forwards;
+}
+
+// Modal card — NOT nested, separate top-level block
+.delete-modal {
+  width: 100%;
+  max-width: 480px;
+  background: $color-paper-crisp;
+  border: 1px solid rgba($color-ink, 0.1);
+  border-left: 3px solid $color-terracotta;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.06), 0 30px 80px -16px rgba($color-ink, 0.5);
+  animation: modal-slide-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 18px;
+    border-bottom: 1px dashed rgba($color-ink, 0.12);
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+  }
+
+  &__close {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-ink-fade;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: all $transition-normal;
+    &:hover { color: $color-ink; background: rgba($color-ink, 0.06); }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: $color-paper;
+    border-bottom: 1px dashed rgba($color-ink, 0.1);
+  }
+
+  &__thumb {
+    width: 72px; height: 72px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: $color-paper-deep;
+    border: 1px solid rgba($color-ink, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  }
+
+  &__thumb-fallback { font-size: 1.8rem; opacity: 0.4; }
+
+  &__item-info { display: flex; flex-direction: column; gap: 4px; }
+
+  &__item-category {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__item-name { @include text-display(1.4rem); color: $color-ink; line-height: 1.1; }
+
+  &__item-price { @include text-display-italic(0.95rem); color: $color-terracotta; font-weight: $fw-medium; }
+
+  &__body {
+    padding: 24px 24px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  &__warning-icon { font-size: 1.1rem; color: $color-ochre; flex-shrink: 0; margin-top: 1px; }
+
+  &__message {
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: $color-ink-soft;
+
+    strong { font-style: italic; color: $color-ink; font-weight: $fw-regular; }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 24px 24px;
+  }
+
+  &__cancel-btn {
+    flex: 1;
+    padding: 13px;
+    border: 1px solid rgba($color-ink, 0.18);
+    background: $color-paper;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    color: $color-ink-soft;
+    cursor: pointer;
+    border-radius: $radius-full;
+    transition: all $transition-normal;
+
+    &:hover:not(:disabled) { background: $color-paper-deep; border-color: $color-ink; color: $color-ink; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &__confirm-btn {
+    flex: 1.5;
+    padding: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: $color-terracotta;
+    color: $color-paper-crisp;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border-radius: $radius-full;
+    border: none;
+    transition: background $transition-normal, transform $transition-normal;
+
+    &:hover:not(:disabled) { background: $color-terracotta-deep; transform: translateY(-1px); }
+    &:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+  }
+
+  &__spinner {
+    width: 13px; height: 13px;
+    border: 1.5px solid rgba($color-paper-crisp, 0.3);
+    border-top-color: $color-paper-crisp;
+    border-radius: 50%;
+    animation: modal-spin 0.6s linear infinite;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ANIMATIONS
+// ═══════════════════════════════════════════════════════════
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-slide-up {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+@keyframes modal-spin {
+  to { transform: rotate(360deg); }
+}
+
+.admin-customers {
+  max-width: 1100px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 32px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 14px;
+  }
+
+  &__title {
+    @include text-display(2.6rem);
+    line-height: 1;
+    margin-bottom: 10px;
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub {
+    font-family: $font-serif;
+    font-style: italic;
+    color: $color-ink-soft;
+  }
+
+  &__count {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    text-align: right;
+    flex-shrink: 0;
+
+    span {
+      @include text-display-italic(2.2rem);
+      color: $color-terracotta;
+      display: block;
+      line-height: 1;
+    }
+  }
+
+  // ─── SEARCH ───────────────────────────────────────────
+  &__search-row {
+    margin-bottom: 28px;
+  }
+
+  &__search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.15);
+    padding: 0 16px;
+    height: 44px;
+    max-width: 360px;
+    transition: border-color $transition-normal;
+
+    svg { color: $color-ink-fade; flex-shrink: 0; }
+
+    &:focus-within {
+      border-color: $color-terracotta;
+      box-shadow: 0 0 0 3px rgba($color-terracotta, 0.08);
+    }
+  }
+
+  &__search {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: $font-serif;
+    font-size: 0.9rem;
+    color: $color-ink;
+    outline: none;
+    font-style: italic;
+    &::placeholder { color: $color-ink-fade; font-style: normal; font-family: $font-mono; font-size: 0.72rem; letter-spacing: 0.08em; }
+  }
+
+  &__search-clear {
+    color: $color-ink-fade;
+    cursor: pointer;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    padding: 2px 4px;
+    transition: color $transition-normal;
+    &:hover { color: $color-terracotta; }
+  }
+
+  // ─── SUMMARY TABLE ────────────────────────────────────
+  &__table {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    box-shadow: $shadow-subtle;
+    margin-bottom: 48px;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 80px 120px 1fr;
+    gap: 16px;
+    padding: 16px 24px;
+    align-items: center;
+    font-family: $font-serif;
+    color: $color-ink-soft;
+    font-size: 0.9rem;
+
+    & + & { border-top: 1px solid rgba($color-ink, 0.07); }
+
+    &--head {
+      background: $color-paper;
+      font-family: $font-mono;
+      font-size: 0.54rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      font-weight: $fw-medium;
+    }
+
+    @include md-down { grid-template-columns: 1fr 1fr; }
+  }
+
+  &__name {
+    @include text-display-italic(1rem);
+    color: $color-ink;
+  }
+
+  &__phone {
+    a {
+      color: $color-ink-soft;
+      font-family: $font-mono;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      transition: color $transition-normal;
+      &:hover { color: $color-terracotta; }
+    }
+  }
+
+  &__order-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba($color-terracotta, 0.1);
+    color: $color-terracotta;
+    font-family: $font-mono;
+    font-size: 0.64rem;
+    font-weight: $fw-semibold;
+  }
+
+  &__spent {
+    @include text-display-italic(1rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+  }
+
+  &__date {
+    font-family: $font-mono;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  // ─── ORDER HISTORY DETAIL CARDS ───────────────────────
+  &__details { display: flex; flex-direction: column; gap: 24px; }
+
+  &__details-title {
+    @include text-display-italic(1.5rem);
+    margin-bottom: 8px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+  }
+
+  &__customer-card {
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    box-shadow: $shadow-subtle;
+  }
+
+  &__customer-head {
+    padding: 20px 24px;
+    border-bottom: 1px dashed rgba($color-ink, 0.1);
+    background: $color-paper;
+  }
+
+  &__customer-name {
+    @include text-display-italic(1.2rem);
+    color: $color-ink;
+    margin-bottom: 4px;
+  }
+
+  &__customer-meta {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__order-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__order-row {
+    display: grid;
+    grid-template-columns: 80px 100px 1fr 120px 100px 90px;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 24px;
+    font-family: $font-serif;
+    font-size: 0.85rem;
+    color: $color-ink-soft;
+
+    & + & { border-top: 1px solid rgba($color-ink, 0.06); }
+
+    @include lg-down { grid-template-columns: 80px 1fr 90px; }
+  }
+
+  &__order-id {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__order-date {
+    font-family: $font-mono;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__order-items {
+    font-style: italic;
+    color: $color-ink-soft;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__order-mode {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    @include lg-down { display: none; }
+  }
+
+  &__order-amount {
+    @include text-display-italic(0.95rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    text-align: right;
+  }
+
+  &__featured-dish {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    align-items: flex-start;
+    background: $color-paper;
+    border: 1px solid rgba($color-ink, 0.08);
+    padding: 20px;
+
+    @include md-down { grid-template-columns: 1fr; }
+  }
+
+  &__featured-photo-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__featured-preview {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: $color-paper-deep;
+    border: 1px solid rgba($color-ink, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &--portrait {
+      aspect-ratio: 3/4;
+    }
+  }
+
+  &__featured-empty {
+    font-size: 2.4rem;
+    opacity: 0.2;
+  }
+
+  &__featured-upload {
+    padding: 14px 12px !important;
+
+    .admin-menu__upload-hint {
+      font-size: 0.68rem;
+    }
+  }
+
+  &__featured-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 4px;
+  }
+
+  &__featured-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+}

@@ -1,0 +1,35 @@
+@use "../abstracts" as *;
+
+.cursor {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: $color-terracotta;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: $z-cursor;
+  transform: translate(-50%, -50%);
+  transition: width $transition-normal, height $transition-normal;
+  mix-blend-mode: multiply;
+
+  @include md-down { display: none; }
+
+  &__ring {
+    width: 40px;
+    height: 40px;
+    border: 1px solid $color-ink;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: #{$z-cursor - 1};
+    transform: translate(-50%, -50%);
+    opacity: 0.4;
+    transition: width $transition-normal, height $transition-normal, opacity $transition-normal;
+
+    @include md-down { display: none; }
+  }
+}

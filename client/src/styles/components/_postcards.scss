@@ -1,0 +1,309 @@
+@use "../abstracts" as *;
+
+.postcards {
+  padding: 130px 48px;
+  background: $color-paper-deep;
+  border-top: 1px solid rgba($color-ink, 0.12);
+  position: relative;
+  overflow: hidden;
+
+  @include md-down { padding: 80px 24px; }
+
+  &__header {
+    max-width: $container-2xl;
+    margin: 0 auto 90px;
+    text-align: center;
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    &::before,
+    &::after {
+      content: '';
+      width: 48px;
+      height: 1px;
+      background: $color-terracotta;
+    }
+
+    strong {
+      @include text-display-italic(0.88rem);
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: $color-ink;
+      font-weight: $fw-medium;
+    }
+  }
+
+  &__heading {
+    @include text-display(clamp(2.8rem, 5vw, 4.5rem));
+    line-height: 1;
+
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__script {
+    @include text-hand;
+    color: $color-ochre;
+    display: inline-block;
+    transform: rotate(-3deg);
+    font-size: 1.1em;
+    line-height: 0.85;
+  }
+
+  &__grid {
+    max-width: $container-2xl;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px 44px;
+    position: relative;
+
+    @include lg-down { grid-template-columns: repeat(2, 1fr); gap: 48px 32px; }
+    @include sm-down { grid-template-columns: 1fr; }
+  }
+}
+
+.postcard {
+  background: $color-paper-crisp;
+  border: 1px solid rgba($color-ink, 0.1);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04), 0 16px 36px -14px rgba($color-ink, 0.22);
+  transition: transform $transition-slow;
+  position: relative;
+  overflow: hidden;
+
+  &:hover { transform: rotate(0) translateY(-6px) scale(1.02); z-index: 3; }
+
+  // Rotation variants
+  &--rot-1 { transform: rotate(-2.2deg); }
+  &--rot-2 { transform: rotate(1.5deg) translateY(20px); }
+  &--rot-3 { transform: rotate(-1deg); }
+  &--rot-4 { transform: rotate(1.2deg); }
+  &--rot-5 { transform: rotate(-1.8deg) translateY(20px); }
+  &--rot-6 { transform: rotate(0.8deg); }
+
+  &__head {
+    position: relative;
+    aspect-ratio: 5/3;
+    overflow: hidden;
+    border-bottom: 1px solid rgba($color-ink, 0.15);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.88'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    // Background variants
+    &--1 { background: linear-gradient(155deg, #3a1f10 0%, #6B3B1E 40%, #a05828 80%, #c88745 100%); }
+    &--2 { background: linear-gradient(155deg, #2a3220 0%, $color-olive 50%, #8A9360 100%); }
+    &--3 { background: linear-gradient(155deg, #5a1818 0%, #8E2A1E 35%, #C04030 70%, #e06a4a 100%); }
+    &--4 { background: linear-gradient(155deg, #3a2818 0%, #6B3B1E 40%, #a05828 70%, $color-ochre 100%); }
+    &--5 { background: linear-gradient(155deg, #2a2818 0%, $color-olive-deep 40%, $color-olive 70%, #8A9360 100%); }
+    &--6 { background: linear-gradient(155deg, #3a1f10 0%, #7a3a1a 40%, $color-terracotta 70%, #d68a5a 100%); }
+  }
+
+  &__postmark {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 74px;
+    height: 74px;
+    color: $color-ink;
+    opacity: 0.65;
+    transform: rotate(-12deg);
+    z-index: 3;
+
+    &-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: $font-mono;
+      font-size: 0.42rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: $fw-medium;
+      text-align: center;
+      line-height: 1.2;
+      padding: 8px;
+      background: radial-gradient(circle, transparent 40%, rgba($color-ink, 0.08) 100%);
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: currentColor;
+        opacity: 0.4;
+      }
+
+      &::before { top: 20px; }
+      &::after { bottom: 20px; }
+    }
+
+    &-center {
+      @include text-display-italic(0.75rem);
+      font-weight: $fw-medium;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: $color-terracotta;
+      display: block;
+      line-height: 1;
+      margin: 2px 0;
+    }
+  }
+
+  &__stamp {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 54px;
+    height: 66px;
+    padding: 6px 4px;
+    transform: rotate(-5deg);
+    z-index: 3;
+    box-shadow: 0 2px 6px rgba($color-ink, 0.15);
+    background:
+      radial-gradient(circle 2.5px at 5px 0, transparent 100%, $color-paper-crisp 101%) 0 0 / 10px 5px repeat-x,
+      $color-paper-crisp;
+
+    &-inner {
+      background: $color-paper-crisp;
+      padding: 4px 2px;
+      border: 1px dashed rgba($color-ink, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    &-value {
+      @include text-display-italic(1.15rem);
+      color: $color-terracotta;
+      font-weight: $fw-medium;
+      line-height: 0.9;
+    }
+
+    &-sub {
+      font-family: $font-mono;
+      font-size: 0.4rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 3px;
+      color: $color-ink-fade;
+    }
+  }
+
+  &__head-emoji {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5rem;
+    opacity: 0.22;
+  }
+
+  &__body {
+    padding: 24px 24px 26px;
+    position: relative;
+  }
+
+  &__quote-mark {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    @include text-display-italic(3rem);
+    color: $color-terracotta;
+    line-height: 0.6;
+    opacity: 0.4;
+  }
+
+  &__stars {
+    @include text-display-italic(0.8rem);
+    letter-spacing: 4px;
+    color: $color-ochre;
+    margin-bottom: 14px;
+  }
+
+  &__text {
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.65;
+    color: $color-ink-soft;
+    margin-bottom: 20px;
+  }
+
+  &__rule {
+    height: 1px;
+    background-image: linear-gradient(to right, $color-ink 50%, transparent 50%);
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+    margin-bottom: 14px;
+    opacity: 0.4;
+  }
+
+  &__footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  &__author {
+    @include text-hand(1.6rem);
+    font-weight: $fw-semibold;
+    color: $color-ink;
+    line-height: 0.9;
+    margin-bottom: 4px;
+  }
+
+  &__event {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__date {
+    font-family: $font-mono;
+    font-size: 0.48rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+    text-align: right;
+
+    strong {
+      display: block;
+      @include text-display-italic(0.9rem);
+      color: $color-terracotta;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      font-weight: $fw-medium;
+    }
+  }
+}

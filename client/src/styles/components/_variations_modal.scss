@@ -1,0 +1,394 @@
+@use "../abstracts" as *;
+
+.var-modal {
+
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: $z-modal;
+    background: rgba($color-ink, 0.55);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: varmodal-fade 180ms ease forwards;
+
+    @include sm-down { align-items: flex-end; padding: 0; }
+  }
+
+  // Modal card
+  & {
+    width: 100%;
+    max-width: 520px;
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.1);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.05), 0 32px 80px -16px rgba($color-ink, 0.45);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: varmodal-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+
+    @include sm-down {
+      max-width: 100%;
+      max-height: 92vh;
+      border-radius: 0;
+      animation: varmodal-sheet 220ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+  }
+
+  // ── Image header ─────────────────────────────────────
+  &__head {
+    position: relative;
+    height: 200px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: $color-ink;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.75;
+  }
+
+  &__img-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    opacity: 0.3;
+  }
+
+  &__head-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(to top, rgba($color-ink, 0.85) 0%, transparent 100%);
+  }
+
+  &__category {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba($color-paper-crisp, 0.65);
+    font-weight: $fw-medium;
+    margin-bottom: 5px;
+  }
+
+  &__title {
+    @include text-display(1.6rem);
+    color: $color-paper-crisp;
+    line-height: 1.05;
+    margin-bottom: 5px;
+  }
+
+  &__desc {
+    font-family: $font-serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: rgba($color-paper-crisp, 0.7);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba($color-ink, 0.5);
+    border: none;
+    color: $color-paper-crisp;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background $transition-normal;
+    z-index: 2;
+
+    &:hover { background: rgba($color-ink, 0.8); }
+  }
+
+  // ── Variation groups body ─────────────────────────────
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { background: rgba($color-ink, 0.15); border-radius: 2px; }
+  }
+
+  &__group {
+    padding: 20px 24px;
+
+    & + & {
+      border-top: 1px dashed rgba($color-ink, 0.1);
+    }
+  }
+
+  &__group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+
+  &__group-name {
+    font-family: $font-serif;
+    font-size: 1rem;
+    color: $color-ink;
+    font-weight: $fw-regular;
+  }
+
+  &__group-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__group-type {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__required {
+    font-family: $font-mono;
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    padding: 3px 8px;
+    background: rgba($color-terracotta, 0.1);
+    color: $color-terracotta;
+    border-radius: $radius-full;
+  }
+
+  // ── Option buttons ────────────────────────────────────
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &--multi {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+
+      @include sm-down { grid-template-columns: 1fr; }
+    }
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba($color-ink, 0.14);
+    background: $color-paper;
+    cursor: pointer;
+    text-align: left;
+    transition: all $transition-normal;
+    width: 100%;
+
+    &:hover {
+      border-color: rgba($color-terracotta, 0.4);
+      background: rgba($color-terracotta, 0.02);
+    }
+
+    &--selected {
+      border-color: $color-terracotta;
+      background: rgba($color-terracotta, 0.06);
+
+      .var-modal__radio {
+        background: $color-terracotta;
+        border-color: $color-terracotta;
+        &::after {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .var-modal__checkbox {
+        background: $color-terracotta;
+        border-color: $color-terracotta;
+        color: $color-paper-crisp;
+      }
+    }
+  }
+
+  &__option-check { flex-shrink: 0; }
+
+  // Radio button
+  &__radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid rgba($color-ink, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-normal;
+    position: relative;
+
+    &::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $color-paper-crisp;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all $transition-normal;
+    }
+  }
+
+  // Checkbox
+  &__checkbox {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgba($color-ink, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-normal;
+    border-radius: $radius-sm;
+  }
+
+  &__option-label {
+    flex: 1;
+    font-family: $font-serif;
+    font-size: 0.92rem;
+    color: $color-ink;
+    line-height: 1.3;
+  }
+
+  &__option-price {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: $color-olive;
+    font-weight: $fw-semibold;
+    flex-shrink: 0;
+  }
+
+  // ── Footer ────────────────────────────────────────────
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 24px;
+    border-top: 1px solid rgba($color-ink, 0.1);
+    background: $color-paper;
+    flex-shrink: 0;
+  }
+
+  &__price-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__price-total {
+    @include text-display-italic(1.8rem);
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    line-height: 1;
+  }
+
+  &__price-base {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    color: $color-ink-fade;
+    font-weight: $fw-medium;
+  }
+
+  &__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: $radius-full;
+    background: $color-ink;
+    color: $color-paper-crisp;
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: $fw-medium;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-normal, transform $transition-normal;
+    white-space: nowrap;
+
+    &:hover:not(&--disabled):not(&--added) {
+      background: $color-terracotta;
+      transform: translateY(-1px);
+    }
+
+    &--disabled {
+      background: rgba($color-ink, 0.2);
+      color: $color-ink-fade;
+      cursor: not-allowed;
+    }
+
+    &--added {
+      background: $color-olive;
+      cursor: default;
+    }
+  }
+}
+
+// ── Card hint badge ───────────────────────────────────────
+.menu-card__variations-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba($color-ink, 0.75);
+  color: $color-paper-crisp;
+  font-family: $font-mono;
+  font-size: 0.48rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: $fw-medium;
+  padding: 4px 10px;
+  z-index: 3;
+  backdrop-filter: blur(4px);
+}
+
+// ── Animations ────────────────────────────────────────────
+@keyframes varmodal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes varmodal-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+@keyframes varmodal-sheet {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}

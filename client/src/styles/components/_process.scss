@@ -1,0 +1,184 @@
+@use "../abstracts" as *;
+
+.process {
+  padding: 130px 48px;
+  background: $color-paper;
+  position: relative;
+  border-top: 1px solid rgba($color-ink, 0.12);
+
+  @include md-down { padding: 80px 24px; }
+
+  &__wrap {
+    max-width: $container-2xl;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 100px;
+    align-items: flex-start;
+
+    @include lg-down { grid-template-columns: 1fr; gap: 60px; }
+  }
+
+  &__left {
+    position: sticky;
+    top: 110px;
+    @include lg-down { position: static; }
+  }
+
+  &__folio {
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    strong {
+      @include text-display-italic(0.88rem);
+      color: $color-ink;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      font-weight: $fw-medium;
+      padding-right: 12px;
+      border-right: 1px solid rgba($color-ink, 0.25);
+    }
+  }
+
+  &__heading {
+    @include text-display(clamp(2.4rem, 4vw, 3.8rem));
+    line-height: 1.02;
+    margin-bottom: 28px;
+
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__sub {
+    font-family: $font-serif;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.75;
+    color: $color-ink-soft;
+    max-width: 300px;
+  }
+
+  &__yield {
+    margin-top: 40px;
+    padding: 22px 24px;
+    background: $color-paper-crisp;
+    border: 1px solid rgba($color-ink, 0.12);
+    max-width: 280px;
+    transform: rotate(-1deg);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04), 0 10px 24px -10px rgba($color-ink, 0.15);
+
+    &-label {
+      font-family: $font-mono;
+      font-size: 0.52rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: $color-ink-fade;
+      margin-bottom: 8px;
+      font-weight: $fw-medium;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &::before {
+        content: '';
+        width: 16px;
+        height: 1px;
+        background: $color-ink-fade;
+      }
+    }
+
+    &-time {
+      @include text-display-italic(1.4rem);
+      color: $color-ink;
+      margin-bottom: 10px;
+    }
+
+    &-details {
+      display: flex;
+      gap: 20px;
+      font-family: $font-serif;
+      font-style: italic;
+      font-size: 0.8rem;
+      color: $color-ink-soft;
+
+      div span {
+        display: block;
+        font-family: $font-mono;
+        font-style: normal;
+        font-size: 0.52rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: $color-ink-fade;
+        margin-top: 3px;
+        font-weight: $fw-medium;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__step {
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 36px;
+    align-items: flex-start;
+    padding: 36px 0;
+    border-bottom: 1px dashed rgba($color-ink, 0.2);
+    transition: padding $transition-slow;
+
+    &:first-child { border-top: 1px dashed rgba($color-ink, 0.2); }
+
+    &:hover {
+      padding-left: 16px;
+      .process__n { color: $color-terracotta; }
+    }
+  }
+
+  &__n {
+    @include text-display-italic(3.5rem);
+    font-weight: $fw-medium;
+    line-height: 1;
+    color: $color-ink;
+    letter-spacing: -0.04em;
+    transition: color $transition-slow;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__step-title {
+    @include text-display(1.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: $color-ink;
+
+    em { font-style: italic; color: $color-terracotta; }
+  }
+
+  &__desc {
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: $color-ink-soft;
+    max-width: 540px;
+  }
+
+  &__icon {
+    font-size: 1.6rem;
+    opacity: 0.35;
+    padding-top: 8px;
+  }
+}

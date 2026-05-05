@@ -1,0 +1,122 @@
+// ═══════════════════════════════════════════════════════════
+//  JT's RUSTIC CUISINE — Design Tokens
+// ═══════════════════════════════════════════════════════════
+
+// ─── COLORS ────────────────────────────────────────────────
+$color-paper:         #ECE2CD;
+$color-paper-deep:    #E0D3B8;
+$color-paper-light:   #F5EDDA;
+$color-paper-crisp:   #FAF3E0;
+
+$color-ink:           #1C1811;
+$color-ink-soft:      #3A2F21;
+$color-ink-fade:      #6B5D47;
+
+$color-terracotta:      #B0502E;
+$color-terracotta-deep: #8B3A1E;
+$color-ochre:           #C8873A;
+$color-olive:           #5A6638;
+$color-olive-deep:      #3F4823;
+$color-cream-deep:      #D4B88A;
+$color-coffee:          rgba(139, 88, 44, 0.18);
+
+$color-success: #5A6638;
+$color-error:   #B0502E;
+$color-warning: #C8873A;
+$color-info:    #6B5D47;
+
+// ─── TYPOGRAPHY ────────────────────────────────────────────
+$font-display: 'Bodoni Moda', Georgia, serif;
+$font-serif:   'EB Garamond', Georgia, serif;
+$font-hand:    'Caveat', cursive;
+$font-rough:   'Kalam', cursive;
+$font-sans:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-mono:    'DM Mono', 'SFMono-Regular', Consolas, monospace;
+
+$fw-light:    300;
+$fw-regular:  400;
+$fw-medium:   500;
+$fw-semibold: 600;
+$fw-bold:     700;
+
+$fs-xs:   0.72rem;
+$fs-sm:   0.85rem;
+$fs-base: 1rem;
+$fs-md:   1.12rem;
+$fs-lg:   1.25rem;
+$fs-xl:   1.5rem;
+$fs-2xl:  2rem;
+$fs-3xl:  2.5rem;
+$fs-4xl:  3.5rem;
+$fs-5xl:  4.5rem;
+$fs-6xl:  6rem;
+
+$lh-tight:   1;
+$lh-snug:    1.2;
+$lh-normal:  1.5;
+$lh-relaxed: 1.65;
+$lh-loose:   1.85;
+
+$ls-tight:   -0.025em;
+$ls-normal:  0;
+$ls-wide:    0.08em;
+$ls-wider:   0.18em;
+$ls-widest:  0.3em;
+
+// ─── SPACING ───────────────────────────────────────────────
+$space-1:  4px;
+$space-2:  8px;
+$space-3:  12px;
+$space-4:  16px;
+$space-5:  20px;
+$space-6:  24px;
+$space-8:  32px;
+$space-10: 40px;
+$space-12: 48px;
+$space-16: 64px;
+$space-20: 80px;
+$space-24: 96px;
+$space-32: 128px;
+
+// ─── LAYOUT ────────────────────────────────────────────────
+$container-sm:  640px;
+$container-md:  768px;
+$container-lg:  1024px;
+$container-xl:  1280px;
+$container-2xl: 1440px;
+
+$nav-height: 72px;
+
+// ─── BORDERS / RADIUS / SHADOWS ────────────────────────────
+$border-width: 1px;
+$border-color: rgba($color-ink, 0.12);
+
+$radius-sm:   3px;
+$radius-md:   6px;
+$radius-lg:   12px;
+$radius-full: 999px;
+
+$shadow-card:   0 2px 0 rgba(0, 0, 0, 0.04), 0 14px 34px -12px rgba($color-ink, 0.22);
+$shadow-lifted: 0 2px 0 rgba(0, 0, 0, 0.05), 0 22px 50px -14px rgba($color-ink, 0.35);
+$shadow-subtle: 0 1px 2px rgba($color-ink, 0.06);
+
+// ─── TRANSITIONS ───────────────────────────────────────────
+$transition-fast:   150ms ease;
+$transition-normal: 250ms ease;
+$transition-slow:   400ms ease;
+$transition-slower: 600ms ease;
+
+// ─── Z-INDEX ───────────────────────────────────────────────
+$z-base:    1;
+$z-content: 10;
+$z-nav:     500;
+$z-overlay: 800;
+$z-modal:   900;
+$z-cursor:  9999;
+
+// ─── BREAKPOINTS ───────────────────────────────────────────
+$bp-sm:  640px;
+$bp-md:  768px;
+$bp-lg:  1024px;
+$bp-xl:  1280px;
+$bp-2xl: 1440px;
