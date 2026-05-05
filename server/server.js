@@ -21,7 +21,8 @@ const allowedOrigins = [
   "http://localhost:5174",
   "https://jtsrusticcuisine.com",
   "https://www.jtsrusticcuisine.com",
-  "https://jtrc-2-client-izfplytoq-lthomas92s-projects.vercel.app"
+  "https://jtrc-2-client-izfplytoq-lthomas92s-projects.vercel.app",
+   "https://jtrc-2-client.vercel.app"
 ];
 
 const corsOptions = {
