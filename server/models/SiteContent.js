@@ -3,10 +3,16 @@ const mongoose = require("mongoose");
 delete mongoose.connection.models["SiteContent"];
 delete mongoose.models["SiteContent"];
 
-const postcardImageSchema = new mongoose.Schema(
+const postcardSchema = new mongoose.Schema(
   {
     imageUrl:  { type: String, default: "" },
     dishName:  { type: String, default: "" },
+    text:      { type: String, default: "" },
+    author:    { type: String, default: "" },
+    event:     { type: String, default: "" },
+    city:      { type: String, default: "" },
+    date:      { type: String, default: "" }, // e.g. "Oct 26"
+    year:      { type: String, default: "" }, // e.g. "NY · 2022"
   },
   { _id: true }
 );
@@ -43,7 +49,7 @@ const siteContentSchema = new mongoose.Schema(
     },
 
     postcards: {
-      images: { type: [postcardImageSchema], default: [] },
+      cards: { type: [postcardSchema], default: [] },
     },
   },
   { timestamps: true }

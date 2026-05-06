@@ -1,47 +1,30 @@
 import { useEffect, useState } from 'react';
 import { siteContentAPI } from '@lib/api';
 
-const CARDS = [
-  {
-    postmark: { city: 'Jersey City', date: 'Oct 26', year: 'NJ · 2022' },
-    text: "The food was amazing for my house warming! Everything was a hit from the Mac & Cheese, to the Salmon, and my favorite the Birria Tacos! The only place to order.",
-    author: 'Lawrence T.', event: 'House Warming', city: 'Jersey City',
-  },
-  {
-    postmark: { city: 'Decatur', date: 'Feb 04', year: 'GA · 2025' },
-    text: "Professional, punctual, and the food tasted like it came straight out of grandma's kitchen. Our whole office is still talking about those buffalo wontons.",
-    author: 'Darius W.', event: 'Corporate Event', city: 'Decatur',
-  },
-  {
-    postmark: { city: 'Stone Mtn', date: 'Jul 19', year: 'GA · 2024' },
-    text: "Three family reunions with JT's. The baked ziti and tilapia tacos are absolute must-haves — we genuinely wouldn't go anywhere else.",
-    author: 'Sandra & Roy B.', event: 'Family Reunion', city: 'Stone Mtn',
-  },
-  {
-    postmark: { city: 'Atlanta', date: 'Oct 28', year: 'GA · 2024' },
-    text: "Booked the Grand Feast for my wedding reception. Every single guest asked for the caterer's card. Worth every penny and so much more.",
-    author: 'Aaliyah J.', event: 'Wedding Reception', city: 'Atlanta',
-  },
-  {
-    postmark: { city: 'Marietta', date: 'Dec 14', year: 'GA · 2024' },
-    text: "The fried mac balls disappeared in minutes flat. Our holiday party was a complete hit and JT's is exactly why. Already re-booked for next year.",
-    author: 'Kevin M.', event: 'Holiday Party', city: 'Marietta',
-  },
-  {
-    postmark: { city: 'Atlanta', date: 'Aug 07', year: 'GA · 2024' },
-    text: 'Every single dish felt like it had been prepared with real care. Our guests are still talking about the shrimp skewers three whole months later.',
-    author: 'Tasha R.', event: 'Birthday Party', city: 'Atlanta',
-  },
+const FALLBACK_CARDS = [
+  { text: "The food was amazing for my house warming! Everything was a hit from the Mac & Cheese, to the Salmon. The only place to order.", author: 'Lawrence T.', event: 'House Warming', city: 'Jersey City', date: 'Oct 26', year: 'NJ · 2022' },
+  { text: "Professional, punctual, and the food tasted like it came straight out of grandma's kitchen. Our whole office is still talking about those buffalo wontons.", author: 'Darius W.', event: 'Corporate Event', city: 'Decatur', date: 'Feb 04', year: 'GA · 2025' },
+  { text: "Three family reunions with JT's. The tilapia tacos are absolute must-haves — we genuinely wouldn't go anywhere else.", author: 'Sandra & Roy B.', event: 'Family Reunion', city: 'Stone Mtn', date: 'Jul 19', year: 'GA · 2024' },
+  { text: "Booked the Grand Feast for my wedding reception. Every single guest asked for the caterer's card. Worth every penny and so much more.", author: 'Aaliyah J.', event: 'Wedding Reception', city: 'Atlanta', date: 'Oct 28', year: 'GA · 2024' },
+  { text: "The fried mac balls disappeared in minutes flat. Our holiday party was a complete hit and JT's is exactly why. Already re-booked for next year.", author: 'Kevin M.', event: 'Holiday Party', city: 'Marietta', date: 'Dec 14', year: 'GA · 2024' },
+  { text: 'Every single dish felt like it had been prepared with real care. Our guests are still talking about the shrimp skewers three whole months later.', author: 'Tasha R.', event: 'Birthday Party', city: 'Atlanta', date: 'Aug 07', year: 'GA · 2024' },
 ];
 
 export default function Postcards() {
-  const [postcardImages, setPostcardImages] = useState([]);
+  const [cards, setCards] = useState(FALLBACK_CARDS);
 
   useEffect(() => {
     siteContentAPI.get()
       .then((res) => {
-        const images = res.data.content?.postcards?.images || [];
-        setPostcardImages(images);
+        const dbCards = res.data.content?.postcards?.cards || [];
+        if (dbCards.length > 0) {
+          // Merge DB cards with fallbacks for any missing fields
+          const merged = FALLBACK_CARDS.map((fallback, i) => ({
+            ...fallback,
+            ...(dbCards[i] || {}),
+          }));
+          setCards(merged);
+        }
       })
       .catch(() => {});
   }, []);
@@ -60,42 +43,35 @@ export default function Postcards() {
       </div>
 
       <div className="postcards__grid">
-        {CARDS.map((c, i) => {
-          const rotMod   = `postcard--rot-${(i % 6) + 1}`;
-          const bgMod    = `postcard__head--${(i % 6) + 1}`;
-          const imgEntry = postcardImages[i];
-          const imgUrl   = imgEntry?.imageUrl || null;
-          const dishName = imgEntry?.dishName || null;
+        {cards.map((c, i) => {
+          const rotMod = `postcard--rot-${(i % 6) + 1}`;
+          const bgMod  = `postcard__head--${(i % 6) + 1}`;
 
           return (
             <article key={i} className={`postcard ${rotMod}`}>
               <div className={`postcard__head ${bgMod}`}>
 
-                {/* Photo — sits behind everything */}
-                {imgUrl && (
+                {c.imageUrl && (
                   <div className="postcard__head-photo">
-                    <img src={imgUrl} alt={dishName || 'Food photo'} />
+                    <img src={c.imageUrl} alt={c.dishName || 'Food photo'} />
                     <div className="postcard__head-photo-overlay" />
                   </div>
                 )}
 
-                {/* Postmark */}
                 <div className="postcard__postmark">
                   <div className="postcard__postmark-circle">
-                    <span>{c.postmark.city}</span>
-                    <span className="postcard__postmark-center">{c.postmark.date}</span>
-                    <span>{c.postmark.year}</span>
+                    <span>{c.city}</span>
+                    <span className="postcard__postmark-center">{c.date}</span>
+                    <span>{c.year}</span>
                   </div>
                 </div>
 
-                {/* Dish name badge — prominent, bottom of photo */}
-                {dishName && (
+                {c.dishName && (
                   <div className="postcard__dish-badge">
                     <span className="postcard__dish-badge-label">Featured Dish</span>
-                    <span className="postcard__dish-badge-name">{dishName}</span>
+                    <span className="postcard__dish-badge-name">{c.dishName}</span>
                   </div>
                 )}
-
               </div>
 
               <div className="postcard__body">

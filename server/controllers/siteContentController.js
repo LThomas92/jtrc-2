@@ -1,7 +1,6 @@
 const SiteContent      = require("../models/SiteContent");
 const { uploadBuffer } = require("../middleware/cloudinary");
 
-// GET /api/site-content — public
 exports.getContent = async (req, res) => {
   try {
     let doc = await SiteContent.findOne({ key: "global" });
@@ -12,22 +11,17 @@ exports.getContent = async (req, res) => {
   }
 };
 
-// PUT /api/site-content — admin only
 exports.updateContent = async (req, res) => {
   try {
-    console.log("FILES RECEIVED:", Object.keys(req.files || {}));
-    console.log("BODY KEYS:", Object.keys(req.body || {}));
-
-    const heroData       = req.body.hero       ? JSON.parse(req.body.hero)       : {};
-    const aboutData      = req.body.about      ? JSON.parse(req.body.about)      : {};
-    const postcardsData  = req.body.postcards  ? JSON.parse(req.body.postcards)  : null;
+    const heroData      = req.body.hero      ? JSON.parse(req.body.hero)      : {};
+    const aboutData     = req.body.about     ? JSON.parse(req.body.about)     : {};
+    const postcardsData = req.body.postcards ? JSON.parse(req.body.postcards) : null;
 
     // Hero featured image
     if (req.files?.heroImage?.[0]) {
       heroData.featuredImageUrl = await uploadBuffer(
         req.files.heroImage[0].buffer, "jts-hero"
       );
-      console.log("Hero image URL:", heroData.featuredImageUrl);
     }
 
     // About photo
@@ -37,51 +31,47 @@ exports.updateContent = async (req, res) => {
       );
     }
 
-    // Postcard images — up to 6, keyed as postcardImage_0 … postcardImage_5
-    let postcardImages = postcardsData?.images || null;
+    // Postcard cards — merge text data with any newly uploaded images
+    let cards = postcardsData?.cards || null;
 
-    // If new files uploaded for specific postcard slots, upload them
     if (req.files) {
-      // First fetch existing postcard images from DB so we can merge
-      if (!postcardImages) {
+      if (!cards) {
         const existing = await SiteContent.findOne({ key: "global" });
-        postcardImages = existing?.postcards?.images?.map(i => ({
-          _id:      i._id,
-          imageUrl: i.imageUrl,
-          dishName: i.dishName,
-        })) || [];
+        cards = (existing?.postcards?.cards || []).map(c => ({
+          imageUrl: c.imageUrl,
+          dishName: c.dishName,
+          text:     c.text,
+          author:   c.author,
+          event:    c.event,
+          city:     c.city,
+          date:     c.date,
+          year:     c.year,
+        }));
       }
 
       for (let i = 0; i < 6; i++) {
         const fieldName = `postcardImage_${i}`;
         if (req.files[fieldName]?.[0]) {
           const url = await uploadBuffer(req.files[fieldName][0].buffer, "jts-postcards");
-          if (!postcardImages[i]) {
-            postcardImages[i] = { imageUrl: url, dishName: "" };
+          if (!cards[i]) {
+            cards[i] = { imageUrl: url, dishName: "", text: "", author: "", event: "", city: "", date: "", year: "" };
           } else {
-            postcardImages[i] = { ...postcardImages[i], imageUrl: url };
+            cards[i] = { ...cards[i], imageUrl: url };
           }
         }
       }
     }
 
-    // Build flat $set using dot-notation — never wipes untouched fields
     const flatSet = {};
     Object.entries(heroData).forEach(([k, v])  => { flatSet[`hero.${k}`]  = v; });
     Object.entries(aboutData).forEach(([k, v]) => { flatSet[`about.${k}`] = v; });
-    if (postcardImages !== null) {
-      flatSet["postcards.images"] = postcardImages;
-    }
-
-    console.log("Saving flatSet keys:", Object.keys(flatSet));
+    if (cards !== null) flatSet["postcards.cards"] = cards;
 
     const doc = await SiteContent.findOneAndUpdate(
       { key: "global" },
       { $set: flatSet },
       { new: true, upsert: true, runValidators: false }
     );
-
-    console.log("Saved featuredImageUrl:", doc.hero?.featuredImageUrl);
 
     res.json({ content: doc });
   } catch (err) {

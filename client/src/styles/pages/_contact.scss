@@ -618,3 +618,132 @@
   display: block;
   border-radius: inherit;
 }
+
+.admin-sc {
+
+  &__postcard-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__postcard-panel {
+    border: 1px solid rgba($color-ink, 0.1);
+    background: $color-paper-crisp;
+    transition: border-color $transition-normal;
+
+    &--open {
+      border-color: rgba($color-ink, 0.2);
+      border-left: 3px solid $color-terracotta;
+    }
+  }
+
+  &__postcard-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background $transition-normal;
+
+    &:hover { background: $color-paper; }
+  }
+
+  &__postcard-toggle-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__postcard-thumb {
+    width: 52px;
+    height: 40px;
+    overflow: hidden;
+    background: $color-paper-deep;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__postcard-num {
+    font-family: $font-mono;
+    font-size: 0.56rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-terracotta;
+    font-weight: $fw-medium;
+    margin-bottom: 3px;
+  }
+
+  &__postcard-preview-text {
+    font-family: $font-serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: $color-ink-soft;
+  }
+
+  &__postcard-body {
+    padding: 20px 20px 24px;
+    border-top: 1px dashed rgba($color-ink, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__postcard-photo-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  &__postcard-photo-preview {
+    width: 160px;
+    flex-shrink: 0;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: $color-paper-deep;
+    border: 1px solid rgba($color-ink, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @include sm-down { width: 100px; }
+  }
+
+  &__postcard-no-photo {
+    font-family: $font-mono;
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-ink-fade;
+  }
+
+  &__postcard-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    @include sm-down { grid-template-columns: 1fr; }
+  }
+
+  &__postcard-field--full {
+    grid-column: 1 / -1;
+  }
+}
