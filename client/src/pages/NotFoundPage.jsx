@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function NotFoundPage() {
   return (
     <section className="not-found">
-      <div className="not-found__folio">Folio 404 — Page Not Found</div>
+      <div className="not-found__folio">Page 404 — Page Not Found</div>
       <h1 className="not-found__title">
         Lost in the <em>kitchen</em>
       </h1>
