@@ -453,3 +453,85 @@
     min-height: 0 !important;
   }
 }
+
+.postcard__head {
+  position: relative;
+  overflow: hidden;
+}
+
+.postcard__head-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 600ms ease;
+
+    .postcard:hover & { transform: scale(1.06); }
+  }
+}
+
+.postcard__head-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba($color-ink, 0.1) 0%,
+    rgba($color-ink, 0.45) 60%,
+    rgba($color-ink, 0.82) 100%
+  );
+  z-index: 1;
+}
+
+.postcard__postmark {
+  position: relative;
+  z-index: 2;
+}
+
+// ── Badge — solid terracotta bar, always readable ─────────
+.postcard__dish-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background: $color-terracotta;
+  padding: 10px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.postcard__dish-badge-label {
+  font-family: $font-mono;
+  font-size: 0.46rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba($color-paper-crisp, 0.75);
+  font-weight: $fw-medium;
+}
+
+.postcard__dish-badge-name {
+  font-family: $font-serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: $color-paper-crisp;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: $fw-medium;
+}
+
+// Postmark text white over photo
+.postcard__head:has(.postcard__head-photo) {
+  .postcard__postmark-circle {
+    border-color: rgba($color-paper-crisp, 0.75);
+    color: $color-paper-crisp;
+  }
+}
