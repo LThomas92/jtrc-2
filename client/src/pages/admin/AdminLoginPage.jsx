@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '@store/useAuth';
 
@@ -58,6 +58,7 @@ export default function AdminLoginPage() {
           <button type="submit" disabled={loading} className="admin-login__btn">
             {loading ? 'Signing in…' : 'Sign in'} <span>→</span>
           </button>
+          <Link to="/admin/forgot-password">Forgot password?</Link>
         </form>
       </div>
     </div>

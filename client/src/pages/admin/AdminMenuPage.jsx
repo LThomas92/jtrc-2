@@ -4,11 +4,13 @@ import { menuAPI } from '@lib/api';
 import { getImageUrl } from '@lib/getImageUrl';
 
 const CATEGORIES = [
-  { value: 'appetizer', label: 'Appetizer' },
-  { value: 'entree',    label: 'Entrée'    },
-  { value: 'side',      label: 'Side'      },
-  { value: 'seafood',   label: 'Seafood'   },
-  { value: 'dessert',   label: 'Dessert'   },
+  { id: 'all',       label: 'All'        },
+  { id: 'breakfast-brunch', label: 'Breakfast/Brunch' },
+  { id: 'pastas', label: 'Pastas' },
+  { id: 'poultry', label: 'Poultry' },
+  { id: 'meat', label: 'Meat' },
+  { id: 'seafood',   label: 'Seafood'    },
+  { id: 'sides',   label: 'Sides'    },
 ];
 
 const EMPTY_FORM = {

@@ -7,31 +7,30 @@ const HERO_DEFAULTS = {
   description: 'Scratch-made Southern comfort catering for the gatherings that matter most — from Sunday dinners to grand celebrations, all prepared with real ingredients and real heart.',
   featuredDish: 'Fried Mac & Cheese Balls',
   featuredDesc: 'Four-cheese béchamel, golden breadcrumb crust, smoked paprika aioli.',
-  featuredPrice: '$45',
-  featuredServes: 'Serves · 12',
+  featuredPrice: '$45', featuredServes: 'Serves · 12',
   featuredCaption: '— Fried Mac & Cheese Balls —',
   featuredImageUrl: '',
 };
 
 const ABOUT_DEFAULTS = {
-  stickerYears: '8+',
-  stickerText: '✦ Since 2018 · Long Island New York · Made With Love',
-  mainPhotoUrl: '',
-  mainPhotoCaption: '— Chef Jessy T in the kitchen —',
+  stickerYears: '8+', stickerText: '✦ Since 2018 · Long Island New York · Made With Love',
+  mainPhotoUrl: '', mainPhotoCaption: '— Chef Jessy T in the kitchen —',
   smallPhotoCaption: 'fresh herbs',
   title: 'Born from a belief that great food brings people home.',
   body: "JT's Rustic Cuisine was founded on a simple idea — food should taste like a memory. Every dish we serve is made from scratch in our New York kitchen, using real ingredients and recipes passed down through generations of family cooks. No shortcuts. No substitutions. Just comfort food with soul.",
   quote: "My mother taught me that cooking isn't about following a recipe — it's about feeding the people you love.",
-  chefSignature: '— Chef Jessy T',
-  chefName: 'Jessica Thomas',
-  chefRole: 'Founder & Head Chef',
+  chefSignature: '— Chef Jessy T', chefName: 'Jessica Thomas', chefRole: 'Founder & Head Chef',
 };
+
+const EMPTY_POSTCARD = { imageUrl: '', dishName: '' };
 
 export default function SiteContentAdminPage() {
   const [hero,           setHero]           = useState(HERO_DEFAULTS);
   const [about,          setAbout]          = useState(ABOUT_DEFAULTS);
+  const [postcardSlots,  setPostcardSlots]  = useState(Array(6).fill(EMPTY_POSTCARD));
   const [heroImageFile,  setHeroImageFile]  = useState(null);
   const [aboutPhotoFile, setAboutPhotoFile] = useState(null);
+  const [postcardFiles,  setPostcardFiles]  = useState(Array(6).fill(null));
   const [loading,        setLoading]        = useState(true);
   const [saving,         setSaving]         = useState(false);
   const [dirty,          setDirty]          = useState(false);
@@ -41,8 +40,14 @@ export default function SiteContentAdminPage() {
     siteContentAPI.get()
       .then((res) => {
         const c = res.data.content;
-        if (c?.hero)  setHero((prev) => ({ ...prev, ...c.hero }));
-        if (c?.about) setAbout((prev) => ({ ...prev, ...c.about }));
+        if (c?.hero)  setHero((p) => ({ ...p, ...c.hero }));
+        if (c?.about) setAbout((p) => ({ ...p, ...c.about }));
+        if (c?.postcards?.images) {
+          const slots = Array(6).fill(null).map((_, i) =>
+            c.postcards.images[i] || { ...EMPTY_POSTCARD }
+          );
+          setPostcardSlots(slots);
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -51,37 +56,46 @@ export default function SiteContentAdminPage() {
   const setH = (key, val) => { setHero((p)  => ({ ...p, [key]: val })); setDirty(true); };
   const setA = (key, val) => { setAbout((p) => ({ ...p, [key]: val })); setDirty(true); };
 
+  const setPostcardField = (idx, key, val) => {
+    setPostcardSlots((prev) => {
+      const next = [...prev];
+      next[idx] = { ...next[idx], [key]: val };
+      return next;
+    });
+    setDirty(true);
+  };
+
+  const setPostcardFile = (idx, file) => {
+    setPostcardFiles((prev) => {
+      const next = [...prev];
+      next[idx] = file;
+      return next;
+    });
+    setDirty(true);
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
       const data = new FormData();
-
-      // Send hero text fields as JSON
-      data.append('hero', JSON.stringify(hero));
-      // Send about text fields as JSON
+      data.append('hero',  JSON.stringify(hero));
       data.append('about', JSON.stringify(about));
+      data.append('postcards', JSON.stringify({ images: postcardSlots }));
 
-      // Append image files if selected — these are the actual File objects
-      if (heroImageFile instanceof File) {
-        data.append('heroImage', heroImageFile);
-        console.log('Appending heroImage:', heroImageFile.name, heroImageFile.size);
-      }
-      if (aboutPhotoFile instanceof File) {
-        data.append('aboutPhoto', aboutPhotoFile);
-      }
+      if (heroImageFile instanceof File) data.append('heroImage', heroImageFile);
+      if (aboutPhotoFile instanceof File) data.append('aboutPhoto', aboutPhotoFile);
 
-      // Debug — log what's in FormData before sending
-      for (const [key, val] of data.entries()) {
-        console.log('FormData field:', key, val instanceof File ? `FILE: ${val.name}` : val.slice?.(0, 60));
-      }
+      postcardFiles.forEach((file, i) => {
+        if (file instanceof File) data.append(`postcardImage_${i}`, file);
+      });
 
       await siteContentAPI.update(data);
       toast.success('Site content saved');
       setDirty(false);
       setHeroImageFile(null);
       setAboutPhotoFile(null);
-    } catch (err) {
-      console.error('Save error:', err);
+      setPostcardFiles(Array(6).fill(null));
+    } catch {
       toast.error('Save failed.');
     } finally {
       setSaving(false);
@@ -110,12 +124,13 @@ export default function SiteContentAdminPage() {
         </button>
       </header>
 
+      {/* Tabs */}
       <div className="admin-sc__tabs">
-        {['hero', 'about'].map((t) => (
+        {['hero', 'about', 'postcards'].map((t) => (
           <button key={t}
             className={`admin-sc__tab ${tab === t ? 'admin-sc__tab--active' : ''}`}
             onClick={() => setTab(t)}>
-            {t === 'hero' ? 'Hero Section' : 'About Section'}
+            {t === 'hero' ? 'Hero Section' : t === 'about' ? 'About Section' : 'Postcards'}
           </button>
         ))}
       </div>
@@ -123,7 +138,6 @@ export default function SiteContentAdminPage() {
       {/* ── HERO TAB ──────────────────────────────────── */}
       {tab === 'hero' && (
         <div className="admin-sc__section">
-
           <div className="admin-sc__section-label">Headline</div>
           <div className="admin-sc__group">
             {['line1', 'line2', 'line3'].map((k, i) => (
@@ -140,77 +154,41 @@ export default function SiteContentAdminPage() {
             value={hero.description}
             onChange={(e) => setH('description', e.target.value)} />
 
-          {/* Featured dish — photo + fields inline */}
           <div className="admin-sc__section-label">Featured Dish</div>
           <div className="admin-sc__featured-dish">
-
             <div className="admin-sc__featured-photo-col">
               <div className="admin-sc__featured-preview">
                 {heroImgPreview
                   ? <img src={heroImgPreview} alt="Featured dish" />
-                  : <div className="admin-sc__featured-empty">🧀</div>}
+                  : <div className="admin-sc__featured-empty">📷</div>}
               </div>
               <div className="admin-menu__upload-zone admin-sc__featured-upload">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setHeroImageFile(file);
-                      setDirty(true);
-                      console.log('Hero image selected:', file.name, file.size);
-                    }
-                  }}
-                />
+                <input type="file" accept="image/*"
+                  onChange={(e) => { setHeroImageFile(e.target.files[0]); setDirty(true); }} />
                 <div className="admin-menu__upload-icon" style={{ fontSize: '1rem', marginBottom: 4 }}>📷</div>
                 <span className="admin-menu__upload-label">
-                  {heroImageFile
-                    ? heroImageFile.name
-                    : hero.featuredImageUrl ? 'Replace photo' : 'Upload photo'}
+                  {heroImageFile ? heroImageFile.name : hero.featuredImageUrl ? 'Replace photo' : 'Upload photo'}
                 </span>
                 <span className="admin-menu__upload-hint">JPG, PNG or WEBP · max 4 MB</span>
               </div>
-              {heroImageFile && (
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--color-olive)', marginTop: 4 }}>
-                  ✓ {heroImageFile.name} ready to upload
-                </p>
-              )}
             </div>
-
             <div className="admin-sc__featured-fields">
-              <div className="admin-pkg__field">
-                <label className="admin-pkg__label">Dish Name</label>
-                <input className="admin-pkg__input" value={hero.featuredDish}
-                  onChange={(e) => setH('featuredDish', e.target.value)} />
-              </div>
-              <div className="admin-pkg__field">
-                <label className="admin-pkg__label">Description</label>
-                <input className="admin-pkg__input" value={hero.featuredDesc}
-                  onChange={(e) => setH('featuredDesc', e.target.value)} />
-              </div>
+              {[
+                ['featuredDish',    'Dish Name'],
+                ['featuredDesc',    'Description'],
+                ['featuredPrice',   'Price  e.g. $45'],
+                ['featuredServes',  'Serves  e.g. Serves · 12'],
+                ['featuredCaption', 'Photo Caption'],
+              ].map(([k, label]) => (
+                <div key={k} className="admin-pkg__field">
+                  <label className="admin-pkg__label">{label}</label>
+                  <input className="admin-pkg__input" value={hero[k]}
+                    onChange={(e) => setH(k, e.target.value)} />
+                </div>
+              ))}
               <div className="admin-sc__featured-row">
-                <div className="admin-pkg__field">
-                  <label className="admin-pkg__label">Price</label>
-                  <input className="admin-pkg__input" placeholder="$45"
-                    value={hero.featuredPrice}
-                    onChange={(e) => setH('featuredPrice', e.target.value)} />
-                </div>
-                <div className="admin-pkg__field">
-                  <label className="admin-pkg__label">Serves</label>
-                  <input className="admin-pkg__input" placeholder="Serves · 12"
-                    value={hero.featuredServes}
-                    onChange={(e) => setH('featuredServes', e.target.value)} />
-                </div>
-              </div>
-              <div className="admin-pkg__field">
-                <label className="admin-pkg__label">Photo Caption</label>
-                <input className="admin-pkg__input" placeholder="— Dish Name —"
-                  value={hero.featuredCaption}
-                  onChange={(e) => setH('featuredCaption', e.target.value)} />
               </div>
             </div>
-
           </div>
         </div>
       )}
@@ -218,7 +196,6 @@ export default function SiteContentAdminPage() {
       {/* ── ABOUT TAB ─────────────────────────────────── */}
       {tab === 'about' && (
         <div className="admin-sc__section">
-
           <div className="admin-sc__section-label">Sticker</div>
           <div className="admin-sc__group admin-sc__group--grid">
             <div className="admin-pkg__field">
@@ -239,17 +216,11 @@ export default function SiteContentAdminPage() {
               <div className="admin-sc__featured-preview admin-sc__featured-preview--portrait">
                 {aboutImgPreview
                   ? <img src={aboutImgPreview} alt="About" />
-                  : <div className="admin-sc__featured-empty">👨‍🍳</div>}
+                  : <div className="admin-sc__featured-empty">📷</div>}
               </div>
               <div className="admin-menu__upload-zone admin-sc__featured-upload">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) { setAboutPhotoFile(file); setDirty(true); }
-                  }}
-                />
+                <input type="file" accept="image/*"
+                  onChange={(e) => { setAboutPhotoFile(e.target.files[0]); setDirty(true); }} />
                 <div className="admin-menu__upload-icon" style={{ fontSize: '1rem', marginBottom: 4 }}>📷</div>
                 <span className="admin-menu__upload-label">
                   {aboutPhotoFile ? aboutPhotoFile.name : about.mainPhotoUrl ? 'Replace photo' : 'Upload photo'}
@@ -303,6 +274,54 @@ export default function SiteContentAdminPage() {
                   onChange={(e) => setA(k, e.target.value)} />
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── POSTCARDS TAB ─────────────────────────────── */}
+      {tab === 'postcards' && (
+        <div className="admin-sc__section">
+          <div className="admin-sc__section-label">Postcard Photos</div>
+          <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--color-ink-soft)', fontSize: '0.9rem', marginBottom: 28 }}>
+            Upload one food photo per postcard slot. Each photo appears on the front of the postcard on the homepage. Add a dish name to show a badge over the photo.
+          </p>
+
+          <div className="admin-sc__postcards-grid">
+            {postcardSlots.map((slot, i) => {
+              const preview = postcardFiles[i]
+                ? URL.createObjectURL(postcardFiles[i])
+                : slot.imageUrl || null;
+
+              return (
+                <div key={i} className="admin-sc__postcard-slot">
+                  <div className="admin-sc__postcard-num">Postcard {i + 1}</div>
+
+                  {/* Photo preview */}
+                  <div className="admin-sc__postcard-preview">
+                    {preview
+                      ? <img src={preview} alt={`Postcard ${i + 1}`} />
+                      : <div className="admin-sc__postcard-empty">No photo</div>}
+                  </div>
+
+                  {/* Upload zone */}
+                  <div className="admin-menu__upload-zone admin-sc__postcard-upload">
+                    <input type="file" accept="image/*"
+                      onChange={(e) => { if (e.target.files[0]) setPostcardFile(i, e.target.files[0]); }} />
+                    <span className="admin-menu__upload-label" style={{ fontSize: '0.58rem' }}>
+                      {postcardFiles[i] ? postcardFiles[i].name : slot.imageUrl ? 'Replace' : 'Upload photo'}
+                    </span>
+                  </div>
+
+                  {/* Dish name */}
+                  <div className="admin-pkg__field" style={{ marginTop: 8 }}>
+                    <label className="admin-pkg__label">Dish name (badge)</label>
+                    <input className="admin-pkg__input" placeholder="e.g. Fried Mac & Cheese Balls"
+                      value={slot.dishName}
+                      onChange={(e) => setPostcardField(i, 'dishName', e.target.value)} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

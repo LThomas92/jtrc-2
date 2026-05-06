@@ -1,8 +1,15 @@
 const mongoose = require("mongoose");
 
-// Clear cached model so schema changes take effect on restart
 delete mongoose.connection.models["SiteContent"];
 delete mongoose.models["SiteContent"];
+
+const postcardImageSchema = new mongoose.Schema(
+  {
+    imageUrl:  { type: String, default: "" },
+    dishName:  { type: String, default: "" },
+  },
+  { _id: true }
+);
 
 const siteContentSchema = new mongoose.Schema(
   {
@@ -18,7 +25,7 @@ const siteContentSchema = new mongoose.Schema(
       featuredPrice:    { type: String, default: "$45" },
       featuredServes:   { type: String, default: "Serves · 12" },
       featuredCaption:  { type: String, default: "— Fried Mac & Cheese Balls —" },
-      featuredImageUrl: { type: String, default: "" },   // ← hero featured dish photo
+      featuredImageUrl: { type: String, default: "" },
     },
 
     about: {
@@ -33,6 +40,10 @@ const siteContentSchema = new mongoose.Schema(
       chefSignature:     { type: String, default: "— Chef Jessy T" },
       chefName:          { type: String, default: "Jessica Thomas" },
       chefRole:          { type: String, default: "Founder & Head Chef" },
+    },
+
+    postcards: {
+      images: { type: [postcardImageSchema], default: [] },
     },
   },
   { timestamps: true }

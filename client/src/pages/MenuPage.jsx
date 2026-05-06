@@ -2,9 +2,19 @@ import { useEffect, useState } from 'react';
 import { menuAPI } from '@lib/api';
 import MenuCard from '@components/home/MenuCard.jsx';
 
+const CATEGORIES = [
+  { id: 'all',              label: 'All'              },
+  { id: 'breakfast-brunch', label: 'Breakfast & Brunch'},
+  { id: 'pastas',           label: 'Pasta'            },
+  { id: 'poultry',          label: 'Poultry'          },
+  { id: 'meat',             label: 'Meat'             },
+  { id: 'seafood',          label: 'Seafood'          },
+  { id: 'sides',            label: 'Sides'            },
+];
+
 export default function MenuPage() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [items,          setItems]          = useState([]);
+  const [loading,        setLoading]        = useState(true);
   const [activeCategory, setActiveCategory] = useState('all');
 
   useEffect(() => {
@@ -19,6 +29,9 @@ export default function MenuPage() {
     (item) => activeCategory === 'all' || item.category === activeCategory
   );
 
+  const countFor = (id) =>
+    id === 'all' ? items.length : items.filter((i) => i.category === id).length;
+
   return (
     <section className="page">
       <header className="page__header">
@@ -32,15 +45,16 @@ export default function MenuPage() {
       </header>
 
       <div className="menu__filter">
-        {['all', 'appetizer', 'entree', 'side', 'seafood'].map((c) => (
+        {CATEGORIES.map((cat) => (
           <button
-            key={c}
-            onClick={() => setActiveCategory(c)}
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.id)}
             className={`menu__filter-btn ${
-              activeCategory === c ? 'menu__filter-btn--active' : ''
+              activeCategory === cat.id ? 'menu__filter-btn--active' : ''
             }`}
           >
-            {c === 'all' ? 'All' : c.charAt(0).toUpperCase() + c.slice(1) + 's'}
+            {cat.label}
+            <sup>{countFor(cat.id)}</sup>
           </button>
         ))}
       </div>
@@ -48,9 +62,7 @@ export default function MenuPage() {
       {loading ? (
         <p className="page__empty">Loading menu…</p>
       ) : filtered.length === 0 ? (
-        <p className="page__empty">
-          Menu items will appear here once the server is running.
-        </p>
+        <p className="page__empty">No items in this category yet.</p>
       ) : (
         <div className="menu__grid" style={{ marginTop: '60px' }}>
           {filtered.map((item, i) => (

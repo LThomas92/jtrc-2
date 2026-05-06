@@ -18,6 +18,8 @@ import ProtectedRoute from '@components/auth/ProtectedRoute.jsx';
 import ContactPage from '@pages/ContactPage.jsx';
 import SiteContentAdminPage from '@pages/admin/SiteContentAdminPage.jsx';
 import ContactMessagesAdminPage from '@pages/admin/ContactMessagesAdminPage.jsx';
+import ForgotPasswordPage from '@pages/admin/ForgotPasswordPage.jsx';
+import ResetPasswordPage  from '@pages/admin/ResetPasswordPage.jsx';
 import FAQPage      from '@pages/FAQPage.jsx';
 import PoliciesPage from '@pages/PoliciesPage.jsx';
 import PrivacyPage  from '@pages/PrivacyPage.jsx';
@@ -42,6 +44,8 @@ export default function App() {
 
       {/* Admin */}
       <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/admin/reset-password"  element={<ResetPasswordPage />} />
       <Route
         path="/admin"
         element={

@@ -65,10 +65,13 @@ export const ordersAPI = {
 };
 
 export const authAPI = {
-  login:  (email, password) => api.post('/auth/login', { email, password }),
-  me:     ()                => api.get('/auth/me'),
-  logout: ()                => api.post('/auth/logout'),
+  login:          (email, password) => api.post('/auth/login', { email, password }),
+  me:             ()                => api.get('/auth/me'),
+  logout:         ()                => api.post('/auth/logout'),
+  forgotPassword: (email)           => api.post('/auth/forgot-password', { email }),
+  resetPassword:  (token, password) => api.post('/auth/reset-password', { token, password }),
 };
+
 
 export const includesAPI = {
   getAll: ()     => api.get('/includes'),

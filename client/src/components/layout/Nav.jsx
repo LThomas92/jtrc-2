@@ -60,8 +60,7 @@ export default function Nav() {
 
         {/* ── Logo (always visible) ────────────────── */}
         <Link to="/" className="nav__logo">
-          JT's Rustic Cuisine
-          <small>— A Comfort Food Cookbook —</small>
+        <img src="/logo.png" alt="JT's Rustic Cuisine" className="nav__logo-img" />
         </Link>
 
         {/* ── Right actions (desktop) ──────────────── */}

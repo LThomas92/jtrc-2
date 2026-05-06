@@ -4,10 +4,12 @@ import { menuAPI } from '@lib/api';
 
 const CATEGORIES = [
   { id: 'all',       label: 'All'        },
-  { id: 'appetizer', label: 'Appetizers' },
-  { id: 'entree',    label: 'Entrées'    },
-  { id: 'side',      label: 'Sides'      },
+  { id: 'breakfast-brunch', label: 'Breakfast/Brunch' },
+  { id: 'pastas', label: 'Pastas' },
+  { id: 'poultry', label: 'Poultry' },
+  { id: 'meat', label: 'Meat' },
   { id: 'seafood',   label: 'Seafood'    },
+  { id: 'sides',   label: 'Sides'    },
 ];
 
 export default function Menu() {

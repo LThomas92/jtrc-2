@@ -22,7 +22,7 @@ export default function CTA() {
           </a>
         </div>
         <div className="cta__signature">
-          <div className="cta__sig-text">— Chef JT</div>
+          <div className="cta__sig-text">— Chef Jessy T</div>
           <div className="cta__sig-label">Founder &amp; Head Chef</div>
         </div>
       </div>

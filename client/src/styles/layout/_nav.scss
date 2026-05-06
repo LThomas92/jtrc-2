@@ -83,6 +83,14 @@
       font-size: 1rem;
     }
 
+    &-img {
+      height: 48px;
+      width: auto;
+      display: block;
+
+    @include lg-down { height: 40px; }
+    }
+
     small {
       display: block;
       font-family: $font-mono;
